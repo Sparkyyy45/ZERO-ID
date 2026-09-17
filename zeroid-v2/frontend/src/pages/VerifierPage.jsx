@@ -308,8 +308,60 @@ export default function VerifierPage() {
 
   // Triggered directly when QR camera or file scanner finds a code
   const handleQrScanned = (decodedText) => {
-    setPayloadInput(decodedText);
-    executeVerification(decodedText);
+    if (!decodedText) return;
+    
+    let resolvedPayload = decodedText;
+
+    // Case 1: Raw JSON from ShareProofPage QR — use directly
+    try {
+      const parsed = JSON.parse(decodedText);
+      if (parsed && parsed.protocol && parsed.protocol.includes('ZERO-ID')) {
+        setPayloadInput(decodedText);
+        executeVerification(decodedText);
+        return;
+      }
+    } catch (_) {}
+
+    // Case 2: URL format — extract txId from path (e.g. /share/TX-... or /tx/TX-...)
+    let txIdFromUrl = null;
+    try {
+      const urlMatch = decodedText.match(/\/(?:share|tx)\/([A-Za-z0-9\-_]+)/);
+      if (urlMatch) txIdFromUrl = urlMatch[1];
+      // Also handle bare txId like TX-ALGO-...
+      if (!txIdFromUrl && decodedText.startsWith('TX-')) txIdFromUrl = decodedText.trim();
+    } catch (_) {}
+
+    if (txIdFromUrl) {
+      // Look up the token in the local vault
+      const matchedToken = tokens.find(t => t.txId === txIdFromUrl || t.id === txIdFromUrl);
+      if (matchedToken) {
+        const builtPayload = {
+          version: '2.0',
+          protocol: 'ZERO-ID-Groth16',
+          id: matchedToken.id,
+          zk_proof_claim: matchedToken.circuitClaim || 'Age > 18 Verified (BN254 Precompile)',
+          disclosed_attributes: matchedToken.disclosedAttributes || {},
+          raw_pii_exposed: '0_BYTES_ZERO_KNOWLEDGE',
+          nullifier_hash: matchedToken.nullifierHash || '0x9a8f2c7b3e104d556812e4f7a90b8c6d1e2f3a4b5c6d7e8f90a1b2c3d4e5f6a7',
+          algorand_app_id: '761383580',
+          algorand_txId: matchedToken.txId,
+          enclave_bound: matchedToken.enclaveBound || 'Hardware Passkey (WebAuthn)',
+          timestamp: new Date().toISOString(),
+          status: matchedToken.status || 'Active'
+        };
+        const payloadStr = JSON.stringify(builtPayload, null, 2);
+        setPayloadInput(payloadStr);
+        executeVerification(payloadStr);
+        addLog(`QR Scanned: Resolved token ${matchedToken.id} from vault for verification`);
+        return;
+      }
+      // Token not in local vault — still try to verify what was scanned
+      addLog(`QR Scanned: TxID ${txIdFromUrl} not found in local vault, attempting raw verification`);
+    }
+
+    // Case 3: Fallback — pass raw text and let executeVerification handle/fail gracefully
+    setPayloadInput(resolvedPayload);
+    executeVerification(resolvedPayload);
   };
 
   const handleCopyCertificate = () => {

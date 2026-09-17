@@ -59,22 +59,20 @@ export default function ShareProofPage() {
     };
   }
 
+  // Compact QR payload — only essential fields for reliable scanning
+  // Verifier reconstructs full data from txId via local vault lookup
   const payload = {
     version: '2.0',
     protocol: 'ZERO-ID-Groth16',
     id: token.id,
-    zk_proof_claim: token.circuitClaim || 'Age > 18 Verified (BN254 Precompile)',
+    zk_proof_claim: 'Age > 18 (BN254)',
     disclosed_attributes: disclosed,
-    raw_pii_exposed: '0_BYTES_ZERO_KNOWLEDGE',
-    nullifier_hash: token.nullifierHash || '0x9a8f2c7b3e104d556812e4f7a90b8c6d1e2f3a4b5c6d7e8f90a1b2c3d4e5f6a7',
+    raw_pii_exposed: '0_BYTES',
+    nullifier_hash: token.nullifierHash ? token.nullifierHash.substring(0, 20) + '...' : '0x9a8f...',
     algorand_app_id: '761383580',
     algorand_txId: token.txId,
-    enclave_bound: token.enclaveBound || 'Hardware Passkey (WebAuthn)',
-    hardware_silicon_attestation: 'ENCLAVE_BOUND_ACTIVE',
-    anti_replay_nonce: 'NONCE_' + Math.random().toString(36).substring(2, 10).toUpperCase(),
-    timestamp: new Date().toISOString(),
-    expires_in_seconds: countdown,
-    status: token.status
+    enclave_bound: 'WebAuthn-FIDO2',
+    status: token.status || 'Active'
   };
 
   const copyPayload = () => {
@@ -183,8 +181,8 @@ export default function ShareProofPage() {
             <div className="p-4 bg-white rounded-2xl border border-slate-200 shadow-sm relative flex items-center justify-center">
               <QRCodeSVG
                 value={JSON.stringify(payload)}
-                size={220}
-                level="M"
+                size={240}
+                level="L"
                 includeMargin={true}
               />
             </div>

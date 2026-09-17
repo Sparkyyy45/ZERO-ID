@@ -327,8 +327,9 @@ export default function VerifierPage() {
     try {
       const urlMatch = decodedText.match(/\/(?:share|tx)\/([A-Za-z0-9\-_]+)/);
       if (urlMatch) txIdFromUrl = urlMatch[1];
-      // Also handle bare txId like TX-ALGO-...
-      if (!txIdFromUrl && decodedText.startsWith('TX-')) txIdFromUrl = decodedText.trim();
+      // Bare txId (TX-...) or token id (ZR-...) — this is what the QR now directly encodes
+      const bare = decodedText.trim();
+      if (!txIdFromUrl && (bare.startsWith('TX-') || bare.startsWith('ZR-'))) txIdFromUrl = bare;
     } catch (_) {}
 
     if (txIdFromUrl) {

@@ -59,8 +59,7 @@ export default function ShareProofPage() {
     };
   }
 
-  // Compact QR payload — only essential fields for reliable scanning
-  // Verifier reconstructs full data from txId via local vault lookup
+  // Full payload (for copy button JSON)
   const payload = {
     version: '2.0',
     protocol: 'ZERO-ID-Groth16',
@@ -68,12 +67,16 @@ export default function ShareProofPage() {
     zk_proof_claim: 'Age > 18 (BN254)',
     disclosed_attributes: disclosed,
     raw_pii_exposed: '0_BYTES',
-    nullifier_hash: token.nullifierHash ? token.nullifierHash.substring(0, 20) + '...' : '0x9a8f...',
+    nullifier_hash: token.nullifierHash || '0x9a8f...',
     algorand_app_id: '761383580',
     algorand_txId: token.txId,
     enclave_bound: 'WebAuthn-FIDO2',
     status: token.status || 'Active'
   };
+
+  // QR encodes ONLY the txId — tiny string, maximum scanability
+  // Verifier auto-resolves full proof from local vault using this txId
+  const qrValue = token.txId;
 
   const copyPayload = () => {
     navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
@@ -180,7 +183,7 @@ export default function ShareProofPage() {
 
             <div className="p-4 bg-white rounded-2xl border border-slate-200 shadow-sm relative flex items-center justify-center">
               <QRCodeSVG
-                value={JSON.stringify(payload)}
+                value={qrValue}
                 size={240}
                 level="L"
                 includeMargin={true}

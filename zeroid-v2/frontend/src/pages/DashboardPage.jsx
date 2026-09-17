@@ -38,25 +38,58 @@ export default function DashboardPage() {
 
   // Listen for IDENTITY_SCANNED notification broadcast from Enterprise Verifier
   useEffect(() => {
-    if (typeof window === 'undefined' || !window.BroadcastChannel) return;
-    let channel;
-    try {
-      channel = new BroadcastChannel('zeroid_vault_sync');
-      const existing = channel.onmessage;
-      channel.onmessage = (event) => {
-        if (existing) existing(event);
-        if (event.data?.type === 'IDENTITY_SCANNED') {
-          setScanAlert({
-            rpName: event.data.rpName || 'Enterprise Verifier',
-            timestamp: new Date().toLocaleTimeString()
-          });
-          addLog(`🔔 Identity Verified by ${event.data.rpName} at ${new Date().toLocaleTimeString()}`);
-          setTimeout(() => setScanAlert(null), 7000);
+    const triggerNotification = (rpName) => {
+      setScanAlert({
+        rpName: rpName || 'Enterprise Verifier',
+        timestamp: new Date().toLocaleTimeString()
+      });
+      addLog(`🔔 Identity Verified by ${rpName || 'Enterprise Verifier'} at ${new Date().toLocaleTimeString()}`);
+      // Auditory chime for citizen
+      try {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (Ctx) {
+          const ctx = new Ctx();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(1046.5, ctx.currentTime + 0.15);
+          gain.gain.setValueAtTime(0.15, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.start(); osc.stop(ctx.currentTime + 0.2);
         }
-      };
-    } catch (e) {}
-    return () => { if (channel) channel.close(); };
-  }, []);
+      } catch (_) {}
+      setTimeout(() => setScanAlert(null), 8000);
+    };
+
+    let channel;
+    if (typeof window !== 'undefined' && window.BroadcastChannel) {
+      try {
+        channel = new BroadcastChannel('zeroid_vault_sync');
+        channel.onmessage = (event) => {
+          if (event.data?.type === 'IDENTITY_SCANNED') {
+            triggerNotification(event.data.rpName);
+          }
+        };
+      } catch (e) {}
+    }
+
+    const handleStorageChange = (e) => {
+      if (e.key === 'zeroid_last_identity_scanned' && e.newValue) {
+        try {
+          const data = JSON.parse(e.newValue);
+          triggerNotification(data.rpName);
+        } catch (_) {}
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      if (channel) channel.close();
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [addLog]);
 
   // Authenticate citizen via WebAuthn hardware passkey before presenting dynamic QR
   const handleOpenPresentQr = async (token) => {
@@ -797,13 +830,18 @@ export default function DashboardPage() {
 
             {/* QR Visual */}
             <div className="flex flex-col sm:flex-row items-center gap-6 p-6 rounded-2xl bg-slate-50 border border-slate-200">
-              <div className="p-3.5 bg-white rounded-2xl border border-slate-200 shadow-sm shrink-0 flex items-center justify-center">
-                <QRCodeSVG
-                  value={JSON.stringify(currentPayload)}
-                  size={180}
-                  level="M"
-                  includeMargin={true}
-                />
+              <div className="flex flex-col items-center gap-2 shrink-0">
+                <div className="p-3.5 bg-white rounded-2xl border border-slate-200 shadow-sm flex items-center justify-center">
+                  <QRCodeSVG
+                    value={selectedTokenForQr?.txId || activeToken?.txId || currentPayload?.algorand_txId || 'TX-ALGO-TESTNET-ZK-E9F3A10B-BN254'}
+                    size={190}
+                    level="L"
+                    includeMargin={true}
+                  />
+                </div>
+                <div className="text-[10px] font-mono text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-200 max-w-[200px] truncate text-center" title={selectedTokenForQr?.txId || activeToken?.txId || currentPayload?.algorand_txId}>
+                  {selectedTokenForQr?.txId || activeToken?.txId || currentPayload?.algorand_txId || 'TX-ALGO-TESTNET-ZK'}
+                </div>
               </div>
 
               <div className="space-y-2.5 w-full text-xs">

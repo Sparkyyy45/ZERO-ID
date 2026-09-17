@@ -73,7 +73,8 @@ export default function VerifierPage() {
   const [selectedDossierEntry, setSelectedDossierEntry] = useState(null);
 
   const [activeProfileId, setActiveProfileId] = useState('lending');
-  const [inputMode, setInputMode] = useState('camera'); // 'camera' | 'terminal'
+  const [inputMode, setInputMode] = useState('quick'); // 'quick' | 'camera' | 'terminal'
+  const [quickTxId, setQuickTxId] = useState('');
   const [payloadInput, setPayloadInput] = useState('');
   const [verificationResult, setVerificationResult] = useState(null); // 'success' | 'revoked' | 'failed' | null
   const [isVerifying, setIsVerifying] = useState(false);
@@ -247,6 +248,20 @@ export default function VerifierPage() {
         setVerificationResult('success');
         addLog(`Enterprise Verifier [${currentProfile.name}]: Groth16 Proof APPROVED for ${payload.id} (0 Bytes Raw PII Stored)`);
 
+        // 🔔 Notify citizen vault that their identity was scanned
+        try {
+          if (typeof window !== 'undefined' && window.BroadcastChannel) {
+            const notifyChannel = new BroadcastChannel('zeroid_vault_sync');
+            notifyChannel.postMessage({
+              type: 'IDENTITY_SCANNED',
+              rpName: currentProfile.name,
+              tokenId: payload.id,
+              timestamp: new Date().toISOString()
+            });
+            notifyChannel.close();
+          }
+        } catch (e) {}
+
         // Record a real session back to Citizen Vault
         const newSession = {
           id: `sess-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
@@ -392,12 +407,19 @@ export default function VerifierPage() {
       channel = new BroadcastChannel('zeroid_inbound_stream');
       channel.onmessage = (event) => {
         if (event.data?.payload) {
-          const payloadStr = typeof event.data.payload === 'string'
-            ? event.data.payload
-            : JSON.stringify(event.data.payload, null, 2);
+          const payload = event.data.payload;
+          const payloadStr = typeof payload === 'string'
+            ? payload
+            : JSON.stringify(payload, null, 2);
+          // Auto-switch to quick mode and fill the txId for visual clarity
+          const txId = payload.algorand_txId || payload.txId || payload.id || '';
+          if (txId) {
+            setQuickTxId(txId);
+            setInputMode('quick');
+          }
           setPayloadInput(payloadStr);
           executeVerification(payloadStr);
-          setInboundAlert(`Inbound QR received from Citizen Vault (${event.data.payload.id || 'Active Token'})`);
+          setInboundAlert(`Inbound QR received from Citizen Vault (${payload.id || 'Active Token'})`);
           setTimeout(() => setInboundAlert(null), 4500);
         }
       };
@@ -643,6 +665,17 @@ export default function VerifierPage() {
                 {/* Mode Tabs */}
                 <div className="flex items-center p-1 rounded-xl bg-slate-950 border border-slate-800">
                   <button
+                    onClick={() => setInputMode('quick')}
+                    className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
+                      inputMode === 'quick'
+                        ? 'bg-emerald-600 text-white shadow-xs'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    <KeyRound className="w-3.5 h-3.5" />
+                    <span>Quick Scan</span>
+                  </button>
+                  <button
                     onClick={() => setInputMode('camera')}
                     className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
                       inputMode === 'camera'
@@ -651,7 +684,7 @@ export default function VerifierPage() {
                     }`}
                   >
                     <Camera className="w-3.5 h-3.5" />
-                    <span>Live Scanner</span>
+                    <span>Camera / Upload</span>
                   </button>
                   <button
                     onClick={() => setInputMode('terminal')}
@@ -666,6 +699,36 @@ export default function VerifierPage() {
                   </button>
                 </div>
               </div>
+
+              {/* View 0: Quick txId Scan (fastest for demos) */}
+              {inputMode === 'quick' && (
+                <div className="space-y-3">
+                  <div className="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-700/40 space-y-3">
+                    <div className="text-xs font-mono text-emerald-300 flex items-center gap-2">
+                      <KeyRound className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>Paste or type the citizen's Token ID or Transaction ID from their QR code</span>
+                    </div>
+                    <div className="flex gap-2">
+                      <input
+                        value={quickTxId}
+                        onChange={(e) => setQuickTxId(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter' && quickTxId.trim()) handleQrScanned(quickTxId.trim()); }}
+                        placeholder="TX-ALGO-TESTNET-ZK-XXXXXX-BN254 or ZR-0001"
+                        className="flex-1 p-3 rounded-xl bg-slate-950 text-emerald-400 font-mono text-xs focus:ring-2 focus:ring-emerald-500 outline-none border border-slate-800"
+                      />
+                      <button
+                        onClick={() => { if (quickTxId.trim()) handleQrScanned(quickTxId.trim()); }}
+                        disabled={!quickTxId.trim() || isVerifying}
+                        className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition-all shadow-sm disabled:opacity-40 flex items-center gap-1.5 shrink-0"
+                      >
+                        <ShieldCheck className="w-3.5 h-3.5" />
+                        Verify
+                      </button>
+                    </div>
+                    <p className="text-[10px] text-slate-500 font-mono">Tip: Click "Transmit to Counter" on the citizen dashboard to auto-fill this, or paste the txId shown on their QR card</p>
+                  </div>
+                </div>
+              )}
 
               {/* View 1: Live Camera / File Scanner */}
               {inputMode === 'camera' ? (

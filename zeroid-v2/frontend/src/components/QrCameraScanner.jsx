@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 
 export default function QrCameraScanner({ onScanSuccess, onError }) {
-  const [activeTab, setActiveTab] = useState('camera'); // 'camera' | 'upload'
+  const [activeTab, setActiveTab] = useState('upload'); // default to upload — more reliable for demos
   const [cameras, setCameras] = useState([]);
   const [selectedCameraId, setSelectedCameraId] = useState('');
   const [isScanning, setIsScanning] = useState(false);

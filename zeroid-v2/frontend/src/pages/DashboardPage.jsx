@@ -32,8 +32,31 @@ export default function DashboardPage() {
   const [copiedPayload, setCopiedPayload] = useState(false);
   const [qrCountdown, setQrCountdown] = useState(300);
   const [showKillSwitchModal, setShowKillSwitchModal] = useState(false);
+  const [scanAlert, setScanAlert] = useState(null); // { rpName, timestamp }
 
   const [transmittedSuccess, setTransmittedSuccess] = useState(false);
+
+  // Listen for IDENTITY_SCANNED notification broadcast from Enterprise Verifier
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.BroadcastChannel) return;
+    let channel;
+    try {
+      channel = new BroadcastChannel('zeroid_vault_sync');
+      const existing = channel.onmessage;
+      channel.onmessage = (event) => {
+        if (existing) existing(event);
+        if (event.data?.type === 'IDENTITY_SCANNED') {
+          setScanAlert({
+            rpName: event.data.rpName || 'Enterprise Verifier',
+            timestamp: new Date().toLocaleTimeString()
+          });
+          addLog(`🔔 Identity Verified by ${event.data.rpName} at ${new Date().toLocaleTimeString()}`);
+          setTimeout(() => setScanAlert(null), 7000);
+        }
+      };
+    } catch (e) {}
+    return () => { if (channel) channel.close(); };
+  }, []);
 
   // Authenticate citizen via WebAuthn hardware passkey before presenting dynamic QR
   const handleOpenPresentQr = async (token) => {
@@ -174,6 +197,29 @@ export default function DashboardPage() {
       />
 
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col gap-6 sm:gap-8">
+
+        {/* 🔔 Live Identity Scan Notification Banner */}
+        {scanAlert && (
+          <div className="p-4 rounded-2xl bg-emerald-950/70 border-2 border-emerald-500/60 text-emerald-100 flex items-center justify-between gap-4 shadow-xl animate-in fade-in slide-in-from-top-2 duration-300">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center shrink-0 animate-pulse">
+                <ShieldCheck className="w-5 h-5 text-emerald-400" />
+              </div>
+              <div>
+                <div className="font-bold text-sm text-emerald-200 flex items-center gap-2">
+                  <span>🔔 Identity Successfully Verified</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 font-mono uppercase">Live</span>
+                </div>
+                <p className="text-xs text-emerald-300/80 font-mono mt-0.5">
+                  <strong>{scanAlert.rpName}</strong> verified your ZERO-ID credential at {scanAlert.timestamp} · Zero raw data shared
+                </p>
+              </div>
+            </div>
+            <button onClick={() => setScanAlert(null)} className="p-1.5 rounded-lg hover:bg-emerald-800/50 text-emerald-400 shrink-0">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
         
         {/* Citizen Vault Identity Actions Bar */}
         <div className="surface-card p-4 sm:p-5 bg-gradient-to-r from-slate-900 via-slate-850 to-indigo-950 text-white shadow-md border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">

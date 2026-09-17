@@ -1,0 +1,81 @@
+Paragraph 3:
+Advanced Cryptography & Distributed Systems Laboratory
+
+Paragraph 6:
+Abstract—Centralized storage of Personally Identifiable Information (PII) during Know Your Customer (KYC) verification creates catastrophic data breach exposure and severe statutory liabilities under frameworks such as India's Digital Personal Data Protection (DPDP) Act 2023 and the EU General Data Protection Regulation (GDPR). While Zero-Knowledge Proofs (ZKPs) theoretically enable selective attribute verification without raw data disclosure, existing implementations suffer from two critical architectural shortcomings: (i) the proof-forwarding vulnerability, wherein detached cryptographic proof strings can be trivially shared among unauthorized entities (Sybil replay), and (ii) logarithmic-time O(log N) accumulator revocation bottlenecks that incur prohibitive settlement latency and transaction overhead on Layer-1 blockchains. This paper presents ZERO-ID, a privacy-preserving systems architecture that synergistically unifies client-side Groth16 zk-SNARKs over the BN254 pairing-friendly elliptic curve, platform hardware security enclaves via W3C WebAuthn/FIDO2 parameter hash-chaining, and Algorand Layer-1 flat key-value Box Storage. We mathematically bind zero-knowledge proof points directly to non-exportable hardware-isolated ECDSA-P256 private keys, reducing Sybil attacks to the existential unforgeability of the physical enclave. Furthermore, by replacing Sparse Merkle Tree accumulators with flat on-chain key-value indexing, ZERO-ID achieves constant-time O(1) state revocation with deterministic 3.80-second block finality. Experimental benchmarking demonstrates a 128-byte compressed proof payload (256-byte uncompressed) compatible with standard QR Version 4 optical scanning, sub-1.5-second client-side WebAssembly proving time, and sub-4-millisecond on-chain verification via native bn254_pairing opcodes, while completely eliminating verifier-side PII retention.
+
+Paragraph 7:
+Keywords—zero-knowledge proofs, digital identity, hardware security enclave, WebAuthn, FIDO2, Algorand, blockchain, Groth16, zk-SNARK, privacy-preserving authentication, credential revocation
+
+Paragraph 15:
+1) Hardware-Enclave Parameter Hash-Chaining: We introduce a protocol that computes a cryptographic digest of the exact Groth16 elliptic curve proof elements, Poseidon nullifier, timestamp, and relying party identifier, requiring this composite challenge to be signed inside a non-exportable hardware security enclave (Apple Secure Enclave, Android Titan M2, Windows TPM 2.0) via W3C WebAuthn [11]. This cryptographically entangles the ZK proof with a physical biometric gate, preventing proof forwarding.
+
+Paragraph 16:
+2) Constant-Time O(1) Decentralized Revocation: We design a flat key-value state indexing architecture deployed on Algorand Layer-1 Box Storage. By indexing a 1-byte revocation flag directly by the 32-byte Poseidon nullifier, revocation queries execute in O(1) constant time with deterministic 3.80-second block finality, bypassing Merkle tree recomputations entirely.
+
+Paragraph 20:
+Foundational work by Ben-Sasson et al. [4] and Groth [5] established efficient pairing-based SNARKs. Groth16 on the BN254 curve produces constant-size proofs comprising three group elements, providing the most compact representation among pairing systems. Anon Aadhaar [6] applied Groth16 circuits to verify RSA-2048 SHA-256 signatures over UIDAI QR codes. While pioneer work, Anon Aadhaar proofs remain detached strings susceptible to forwarding and lack any on-chain revocation mechanism. Polygon ID [9] implements Verifiable Credentials with BabyJubJub signatures, utilizing on-chain Merkle accumulators on EVM networks with O(log N) revocation overhead.
+
+Paragraph 32:
+The witness is supplied to the compiled WebAssembly Circom circuit. The snarkjs engine computes Groth16 proof elements π = (A ∈ G₁, B ∈ G₂, C ∈ G₁) over the BN254 elliptic curve. Simultaneously, a scoped 32-byte nullifier hash is generated via the Poseidon algebraic hash function [15]:
+
+Paragraph 33:
+NullifierHash = Poseidon(Aadhaar_Secret_Salt, UID_Hash, RelyingParty_ID)    (1)
+
+Paragraph 36:
+To cryptographically bind the proof to the host hardware, the client constructs a composite challenge digest C_HW:
+
+Paragraph 37:
+C_HW = SHA-256(A_bytes || B_bytes || C_bytes || NullifierHash || Timestamp || Nonce)    (2)
+
+Paragraph 38:
+The browser invokes navigator.credentials.get() via WebAuthn, triggering local biometric authentication (Touch ID, Face ID, or Windows Hello). The hardware enclave signs C_HW with its non-exportable ECDSA-P256 private key, yielding signature σ = (r, s). The resulting presentation bundle contains: {π, NullifierHash, σ, PublicSignals, Timestamp, Nonce}.
+
+Paragraph 41:
+e(A, B) = e(α, β) · e(L, γ) · e(C, δ)    (3)
+
+Paragraph 42:
+where L = IC₀ + Σ(xᵢ · ICᵢ) represents the public instance accumulator. Concurrently, the verifier queries Revocation App ID 761383581 for the Box Storage allocation keyed by NullifierHash. If the box contains 0x01 (REVOKED), the presentation is rejected; otherwise, access is granted. The verifier stores exactly 0 bytes of customer PII.
+
+Paragraph 57:
+Definition 1 (Computational Zero-Knowledge): The proving system satisfies zero-knowledge if for every probabilistic polynomial-time (PPT) adversary A, there exists a PPT simulator S such that for all valid witnesses w satisfying relation R(x, w) = 1, the view of A interacting with real prover P(x, w) is computationally indistinguishable from S(x): View_A(P(x, w)) ≈_c S(x). In Groth16, this holds under randomized blinding factors r, s ∈ 𝔽_r.
+
+Paragraph 58:
+Definition 2 (Hardware-Bound Anti-Forwarding Game): Let A be a PPT adversary who observes a valid presentation bundle Γ = {π, NullifierHash, σ, T, Nonce} generated by honest party H on device D_H for relying party RP₁. A wins the anti-forwarding experiment Exp_A^anti-fwd if A outputs a valid bundle Γ' acceptable to verifier RP₂ ≠ RP₁ or at timestamp T' > T + 300s, without physical control of D_H's biometric sensor.
+
+Paragraph 59:
+Theorem 1 (Anti-Forwarding Reduction): If the signature scheme implemented by F_HW is Existentially Unforgeable under Chosen Message Attacks (EUF-CMA) and SHA-256 is collision-resistant, then the probability of any PPT adversary A winning Exp_A^anti-fwd is negligible in the security parameter λ:
+
+Paragraph 60:
+Adv_A^anti-fwd(λ) ≤ Adv_F_HW^EUF-CMA(λ) + Adv_SHA256^CR(λ) + 2^(-λ)    (4)
+
+Paragraph 61:
+Proof Sketch: Suppose A constructs a valid Γ' for RP₂ without biometric invocation on D_H. By Equation (2), C_HW' contains RP₂ ≠ RP₁. By collision resistance of SHA-256, C_HW' ≠ C_HW with probability 1 - 2^(-λ). To forge a valid signature σ' over C_HW', A must forge an ECDSA-P256 signature without access to the isolated private key, directly breaking the EUF-CMA security of the hardware enclave. Thus, Adv_A^anti-fwd is negligible.
+
+Paragraph 71:
+Prover Latency & Memory Footprint: Client-side proving on the desktop testbed averaged 1.37s with 42 MB peak memory allocation. On the mobile testbed (Tensor G2), mean proving latency was 2.14s with 48 MB peak RAM. This establishes that Groth16 age verification is fully practical on commodity smartphones without server assistance.
+
+Paragraph 72:
+Revocation Dynamics: In Merkle accumulator architectures, invalidating a credential requires recomputing d hashes and publishing a root update. For an identity registry of N = 10^8 users (d = 27), the accumulator requires 27 hash evaluations and expensive storage slot writes. In ZERO-ID, Algorand Box Storage indexes the 1-byte flag directly by NullifierHash, requiring exactly 1 key-value write regardless of N. The measured round finality on Algorand TestNet was 3.80s (σ = 0.31s), confirming instant global propagation.
+
+Paragraph 77:
+3) Supreme Court Puttaswamy Precedent: In K.S. Puttaswamy v. Union of India (2018) [18], the 5-judge Constitution Bench prohibited private entities from storing unredacted 12-digit Aadhaar numbers. ZERO-ID processes only cryptographic hashes and Poseidon nullifiers, guaranteeing that raw Aadhaar identifiers are never exposed or archived.
+
+Paragraph 82:
+Groth16 relies on a structured reference string (SRS) generated via the Perpetual Powers of Tau ceremony (>1,000 participants) [20]. Under the 1-of-N honest participant model, the setup is secure provided at least one participant discarded their toxic waste. Hardware availability is pervasive: W3C WebAuthn is supported natively across iOS (Secure Enclave), Android 9+ (Titan M2 / StrongBox), and Windows 10+ (TPM 2.0), covering over 92% of active smartphones.
+
+Paragraph 86:
+ZERO-ID resolves the fundamental trilemma of digital identity verification—reconciling absolute user privacy, robust Sybil resistance, and high-throughput revocation. By cryptographically binding Groth16 zero-knowledge proof elements to platform hardware security enclaves via WebAuthn parameter hash-chaining, we eliminate proof forwarding without proprietary biometric capture hardware. Furthermore, our flat key-value Box Storage architecture on Algorand Layer-1 delivers constant-time O(1) revocation with 3.80-second deterministic finality, representing a 99.6% reduction in latency compared to Merkle-tree accumulators on EVM networks.
+
+Paragraph 92:
+[4] E. Ben-Sasson, A. Chiesa, D. Genkin, E. Tromer, and M. Virza, "SNARKs for C: Verifying Program Executions Succinctly and in Zero Knowledge," in Advances in Cryptology – CRYPTO 2013, LNCS vol. 8043, Springer, 2013, pp. 90–108.
+
+Paragraph 93:
+[5] J. Groth, "On the Size of Pairing-Based Non-Interactive Arguments," in Advances in Cryptology – EUROCRYPT 2016, LNCS vol. 9666, Springer, 2016, pp. 305–326.
+
+Paragraph 103:
+[15] L. Grassi, D. Khovratovich, C. Rechberger, A. Roy, and M. Schofnegger, "Poseidon: A New Hash Function for Zero-Knowledge Proof Systems," in Proc. 30th USENIX Security Symposium (USENIX Security 21), Aug. 2021, pp. 519–535.
+
+Paragraph 109:
+[21] A. Kothapalli, S. Setty, and I. Tzialla, "Nova: Recursive Zero-Knowledge Arguments from Folding Schemes," in Advances in Cryptology – CRYPTO 2022, LNCS vol. 13508, Springer, 2022, pp. 247–277.
+

@@ -1,0 +1,93 @@
+
+================================================================================
+STRUCTURE AUDIT: ZERO_ID_IEEE_Paper_Final_Revised.docx
+================================================================================
+
+--- Headings & Major Sections ---
+P005 [Normal]: Abstract—Contemporary digital identity verification systems require centralized storage of
+P006 [Normal]: Keywords—zero-knowledge proofs, digital identity, hardware security enclave, WebAuthn, FID
+P007 [Normal]: I. INTRODUCTION
+P017 [Normal]: II. RELATED WORK
+P029 [Normal]: III. SYSTEM ARCHITECTURE
+P047 [Normal]: IV. CIRCUIT DESIGN AND CRYPTOGRAPHIC PRIMITIVES
+P056 [Normal]: V. SECURITY ANALYSIS
+P067 [Normal]: VI. EXPERIMENTAL EVALUATION
+P074 [Normal]: VII. REGULATORY COMPLIANCE ANALYSIS
+P078 [Normal]: VIII. DISCUSSION AND LIMITATIONS
+P083 [Normal]: IX. CONCLUSION
+P089 [Normal]: REFERENCES
+
+--- Tables Summary (6 tables) ---
+Table 1 (6 rows x 5 cols): ['System', 'Binding', 'Revocation', 'Latency', 'PII']
+Table 2 (1 rows x 1 cols): ['+----------------------------+ | CLIENT TIER (Edge Browser) | | +------------------------+ | | | 1. UIDAI XML-DSig      | | | |    Ingest / RSA Verify | | | +-----------+------------+ | |             |              | |             v              | | +------------------------+ | | | 2. Circom WASM Prover  | | | |    Groth16 (BN254)     | | | +-----------+------------+ | |             |              | |             v              | | +------------------------+ | | | 3. FIDO2 / WebAuthn    | | | |    HW Enclave Sign     | | | +-----------+------------+ | +-------------|--------------+               v +----------------------------+ | PRESENTATION (QR/Webhook)  | | 256B Proof + 32B Nullifier | +-------------|--------------+               v +----------------------------+ | CONSENSUS TIER (Algo L1)   | | +------------------------+ | | | App 1: bn254_pairing   | | | |   (Math Validity)      | | | +------------------------+ | | | App 2: Box Storage     | | | |   (O(1) Revoc. Index)  | | | +------------------------+ | +----------------------------+']
+Table 3 (1 rows x 1 cols): ['template AgeProof() {   signal input birthYear;   signal input currentYear;   signal input ageThreshold;   signal output isOverAge;    signal calculatedAge;   calculatedAge <==     currentYear - birthYear;    // Range-check to [0,127];   // also binds calculatedAge   // via the Num2Bits constraint   component n2b = Num2Bits(7);   n2b.in <== calculatedAge;    // Comparator gate   component gte =     GreaterEqThan(7);   gte.in[0] <== calculatedAge;   gte.in[1] <== ageThreshold;   isOverAge <== gte.out;   isOverAge === 1; // Enforce }']
+Table 4 (5 rows x 5 cols): ['System', 'Proof Size', 'Verify Time', 'AVM Opcode', 'QR Fit']
+Table 5 (6 rows x 3 cols): ['Attack Vector', 'Threat', 'ZERO-ID Defense']
+Table 6 (6 rows x 4 cols): ['Metric', 'Prior Art Baseline', 'ZERO-ID', 'Improvement']
+
+================================================================================
+STRUCTURE AUDIT: ZERO_ID_Technical_Report_Patent_Specification_REVISED.docx
+================================================================================
+
+--- Headings & Major Sections ---
+P007 [Heading 1]: 1. Project Overview
+P011 [List Paragraph]: 1. Client-side Groth16 zero-knowledge proof generation over the BN254 elliptic curve, comp
+P012 [List Paragraph]: 2. Hardware-enclave parameter hash-chaining via W3C WebAuthn / FIDO2, binding proof presen
+P013 [List Paragraph]: 3. Constant-time O(1) decentralized revocation using Algorand Layer-1 Box Storage, achievi
+P014 [List Paragraph]: 4. A verifier-side data-minimization architecture: the relying party verifier is not requi
+P015 [Heading 1]: 2. Problem Statement and Motivation
+P017 [Heading 2]: 2.1 The Centralized Storage Problem
+P019 [Heading 2]: 2.2 The Proof-Forwarding Vulnerability (Sybil Risk)
+P021 [Heading 2]: 2.3 The Revocation Bottleneck
+P023 [Heading 2]: Comparative Summary
+P024 [Heading 1]: 3. Novelty, Prior-Art Analysis, and Patentability
+P026 [Heading 2]: 3.1 Prior-Art Comparison (Inventor Review)
+P027 [Heading 2]: 3.2 Candidate Inventive Steps
+P032 [Heading 2]: 3.3 Patentability Under Indian Law
+P035 [List Paragraph]: 1. Revocation lookup complexity reduced from O(log N) to O(1) - an algorithmic change in c
+P036 [List Paragraph]: 2. Revocation propagation latency measured at 3.80s on Algorand TestNet, against a several
+P037 [List Paragraph]: 3. Proof transmission payload of 128 bytes (Groth16/BN254), materially smaller than the te
+P038 [List Paragraph]: 4. A verifier-side architecture designed so that persistent storage of customer PII is not
+P039 [Heading 1]: 4. Research and Conceptual Development
+P040 [Heading 2]: 4.1 Proving System Selection: Groth16 vs. Alternatives
+P043 [Heading 2]: 4.2 Consensus Layer Selection: Algorand vs. Alternatives
+P044 [Heading 1]: 5. Technical Methodology
+P056 [Heading 1]: 6. System Architecture and Design
+P057 [Heading 2]: Figure 1 - End-to-End System Architecture
+P059 [Heading 2]: Figure 2 - Cryptographic Protocol Sequence
+P061 [Heading 1]: 7. Software, Technologies and Implementation
+P062 [Heading 1]: 8. Algorithms and Computational Methods
+P063 [Heading 2]: 8.1 Groth16 Bilinear Pairing Verification
+P067 [Heading 2]: 8.2 Age Validation Circuit (age_proof.circom)
+P092 [Heading 2]: 8.3 Poseidon Nullifier Generation
+P094 [Heading 2]: 8.4 Hardware-Enclave Parameter Hash-Chaining (Core Inventive Step)
+P096 [Heading 1]: 9. Database and Data Management
+P103 [Heading 1]: 10. User Interface Design
+P110 [Heading 1]: 11. Implementation Modules
+P119 [Heading 1]: 12. Testing, Validation and Empirical Results
+P121 [Heading 2]: 12.1 Test Environment
+P129 [Heading 2]: 12.2 Measured Results
+P131 [Heading 2]: 12.3 Smart Contract Deployment Status
+P136 [Heading 2]: 12.4 Security & Adversarial Testing
+P141 [Heading 1]: 13. Findings and Analysis
+P142 [Heading 2]: 13.1 Regulatory Position
+P144 [Heading 2]: 13.2 Economic Feasibility
+P146 [Heading 1]: 14. Limitations
+P153 [Heading 1]: 15. Future Scope
+P159 [Heading 1]: 16. Conclusion
+P163 [Heading 1]: 17. Catalog of Original Components
+P182 [Heading 1]: 18. Appendix: Draft Patent Claims (For Patent Agent Review)
+
+--- Tables Summary (12 tables) ---
+Table 1 (5 rows x 2 cols): ['Principal Author & Inventor:', 'Suyash & Project Engineering Team (ZERO-ID)']
+Table 2 (1 rows x 1 cols): ['CORE VALUE PROPOSITION: ZERO-ID is designed for a zero-byte verifier PII footprint, substantially mitigates proof-forwarding (Sybil) attacks via hardware-enclave parameter chaining, reduces measured revocation propagation from the 15-30 minute range typical of EVM-based Layer-1 designs to a measured 3.80 seconds on Algorand TestNet, and compresses the cryptographic proof payload to 128 bytes (fitting a standard QR Version 4 code).']
+Table 3 (5 rows x 3 cols): ['Domain / Prior Art', 'Identified Limitation', 'ZERO-ID Approach']
+Table 4 (7 rows x 3 cols): ['Prior-Art System', 'What It Does', 'Gap ZERO-ID Addresses']
+Table 5 (1 rows x 1 cols): ["PATENTABILITY POSITION (inventor's argument, subject to review by a registered patent agent): ZERO-ID is presented as a cryptographic apparatus and method producing measurable technical effects in computational complexity, communication latency, bandwidth efficiency, and verifier-side data handling - consistent with the Ferid Allani / CRI patentability threshold. This position, and the final claim language, should be validated by a registered patent agent before filing."]
+Table 6 (5 rows x 5 cols): ['Proof System', 'Proof Size', 'Verification Time', 'On-Chain Opcode', 'Mobile QR Fit']
+Table 7 (6 rows x 4 cols): ['Metric', 'Ethereum L1', 'Solana', 'Algorand L1']
+Table 8 (8 rows x 3 cols): ['Tier', 'Component', 'Function']
+Table 9 (12 rows x 4 cols): ['Step', 'From', 'To', 'Message / Action']
+Table 10 (8 rows x 3 cols): ['Layer', 'Technology', 'Role & Selection Rationale']
+Table 11 (7 rows x 4 cols): ['Metric', 'Sample Size (N)', 'Result', 'Methodology']
+Table 12 (1 rows x 1 cols): ['These are DRAFT claims prepared by the inventors to communicate the scope of the invention to a registered patent agent. They are not in final form for filing. A registered patent agent should review claim breadth, dependency structure, and support in the specification before these are submitted as part of a Form 2 complete specification.']

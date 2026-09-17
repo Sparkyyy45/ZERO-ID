@@ -1,0 +1,2274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZERO-ID — Executive Institutional Pitch Deck | Series A Board & Diligence Dossier</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans, Inter, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* =======================================================
+           INSTITUTIONAL SERIES A & MCKINSEY DESIGN TOKENS
+           Strict Fixed 16:9 Aspect Ratio (1920x1080 Stage)
+           ======================================================= */
+        :root {
+            --stage-bg: #070D1B;
+            --slide-bg: #FFFFFF;
+            --surface-subtle: #F8FAFC;
+            --surface-card: #FFFFFF;
+            --surface-contrast: #0F172A;
+            
+            --border-hairline: #E2E8F0;
+            --border-strong: #CBD5E1;
+            --border-dark: #334155;
+            
+            --text-primary: #0F172A;
+            --text-secondary: #334155;
+            --text-muted: #64748B;
+            --text-light: #94A3B8;
+            --text-inverse: #FFFFFF;
+            
+            /* Institutional Color Accents (No Gradients) */
+            --accent-blue: #1D4ED8;
+            --accent-blue-subtle: #EFF6FF;
+            --accent-blue-border: #BFDBFE;
+            
+            --accent-green: #047857;
+            --accent-green-subtle: #ECFDF5;
+            --accent-green-border: #A7F3D0;
+            
+            --accent-crimson: #B91C1C;
+            --accent-crimson-subtle: #FEF2F2;
+            --accent-crimson-border: #FECACA;
+            
+            --accent-amber: #B45309;
+            --accent-amber-subtle: #FFFBEB;
+            --accent-amber-border: #FDE68A;
+
+            --font-display: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: var(--stage-bg);
+            font-family: var(--font-body);
+            color: var(--text-primary);
+        }
+
+        .deck-viewport {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--stage-bg);
+        }
+
+        .deck-stage {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            transform-origin: 0 0;
+            background: var(--slide-bg);
+            box-shadow: 0 35px 70px -15px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Slide Layout: 1920 x 1080 fixed — optimal margins for maximum canvas utilization */
+        .slide {
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+            box-sizing: border-box;
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s ease;
+            padding: 28px 56px 0 56px;
+            display: flex;
+            flex-direction: column;
+            background: var(--slide-bg);
+            overflow: hidden;
+        }
+
+        .slide.active {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Institutional Executive Slide Header — fixed height, bold presence */
+        .slide-header {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2.5px solid var(--text-primary);
+            padding-bottom: 10px;
+            min-height: 94px;
+        }
+
+        .slide-category {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            margin-bottom: 4px;
+        }
+
+        .slide-category .indicator-box {
+            width: 10px;
+            height: 10px;
+            background: var(--accent-blue);
+        }
+
+        .slide-category.danger { color: var(--accent-crimson); }
+        .slide-category.danger .indicator-box { background: var(--accent-crimson); }
+
+        .slide-category.success { color: var(--accent-green); }
+        .slide-category.success .indicator-box { background: var(--accent-green); }
+
+        .slide-title {
+            font-family: var(--font-display);
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.15;
+            color: var(--text-primary);
+            letter-spacing: -0.025em;
+        }
+
+        .slide-subtitle {
+            font-size: 17px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            font-weight: 400;
+            max-width: 1480px;
+            line-height: 1.4;
+        }
+
+        .slide-header-meta {
+            text-align: right;
+            font-family: var(--font-mono);
+        }
+
+        .slide-number-box {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            background: var(--surface-subtle);
+            border: 1px solid var(--border-hairline);
+            padding: 5px 16px;
+            display: inline-block;
+        }
+
+        .slide-confidential-tag {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            letter-spacing: 0.05em;
+        }
+
+        /* Slide Main Body — fills ALL remaining vertical space */
+        .slide-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding-top: 12px;
+            padding-bottom: 44px;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        /* Slide Footer — pinned absolutely to bottom of slide */
+        .slide-footer {
+            position: absolute;
+            bottom: 0;
+            left: 56px;
+            right: 56px;
+            height: 38px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-hairline);
+            font-family: var(--font-mono);
+            font-size: 11.5px;
+            color: var(--text-muted);
+            background: var(--slide-bg);
+        }
+
+        .slide-footer-sources {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .slide-footer-sources strong {
+            color: var(--text-secondary);
+        }
+
+        /* Formal Frame Box — fills available vertical space */
+        .frame-box {
+            border: 1px solid var(--border-hairline);
+            background: var(--surface-card);
+            padding: 16px 22px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .frame-header {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border-bottom: 1px solid var(--border-hairline);
+            padding-bottom: 7px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        /* Institutional Tables — generous row heights and crystal clear text */
+        .inst-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14.5px;
+            line-height: 1.45;
+        }
+
+        .inst-table th {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            background: var(--surface-subtle);
+            padding: 11px 16px;
+            text-align: left;
+            border-bottom: 2px solid var(--border-hairline);
+            border-top: 1px solid var(--border-hairline);
+            flex-shrink: 0;
+        }
+
+        .inst-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-hairline);
+            color: var(--text-secondary);
+            vertical-align: middle;
+        }
+
+        .inst-table tr:hover td {
+            background: #F8FAFC;
+        }
+
+        .inst-table tr.highlight td {
+            background: var(--accent-blue-subtle);
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        .mono {
+            font-family: var(--font-mono);
+        }
+
+        /* KPI Values — prominent executive sizing */
+        .kpi-value {
+            font-family: var(--font-display);
+            font-size: 54px;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.03em;
+        }
+
+        .kpi-label {
+            font-size: 13.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        /* Pipeline Flow Component (Slide 3) — stretches full height */
+        .pipeline-flow {
+            flex: 1;
+            display: flex;
+            align-items: stretch;
+            justify-content: space-between;
+            gap: 12px;
+            width: 100%;
+            min-height: 0;
+        }
+
+        .pipeline-card {
+            flex: 1;
+            border: 1px solid var(--border-hairline);
+            background: var(--surface-card);
+            padding: 18px 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 0;
+        }
+
+        .pipeline-card.node-1 { border-top: 4px solid var(--accent-blue); }
+        .pipeline-card.node-2 { border-top: 4px solid #8B5CF6; }
+        .pipeline-card.node-3 { border-top: 4px solid var(--accent-green); }
+        .pipeline-card.node-4 { border-top: 4px solid var(--accent-amber); }
+        .pipeline-card.node-5 { 
+            border-top: 4px solid #38BDF8; 
+            background: #0F172A; 
+            border-color: #334155; 
+            color: #FFFFFF;
+        }
+
+        .pipeline-tag {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .pipeline-title {
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+
+        .pipeline-card.node-5 .pipeline-title {
+            color: #FFFFFF;
+        }
+
+        .pipeline-desc {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            line-height: 1.45;
+        }
+
+        .pipeline-card.node-5 .pipeline-desc {
+            color: #94A3B8;
+        }
+
+        .pipeline-chip {
+            padding: 7px 10px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 700;
+            text-align: center;
+            border-radius: 2px;
+            margin-top: 10px;
+        }
+
+        .pipeline-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 22px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* Minimalist Presenter Floating Controller — CENTERED at bottom, never blocks content */
+        .deck-controls {
+            position: fixed;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #0F172A;
+            border: 1px solid #334155;
+            padding: 4px 14px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            z-index: 10000;
+        }
+
+        .deck-btn {
+            background: transparent;
+            border: none;
+            color: #CBD5E1;
+            padding: 4px 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            transition: background 0.15s ease;
+        }
+
+        .deck-btn:hover { background: #334155; }
+
+        .deck-indicator {
+            color: #94A3B8;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 0 8px;
+        }
+
+        /* Minimal Progress Rail */
+        .progress-rail {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 10000;
+        }
+
+        .progress-indicator {
+            height: 100%;
+            width: 11.11%;
+            background: var(--accent-blue);
+            transition: width 0.25s ease;
+        }
+
+        /* Vector Badge Tags */
+        .tag-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 8px;
+            border-radius: 2px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .tag-status.safe { background: var(--accent-green-subtle); color: var(--accent-green); border: 1px solid var(--accent-green-border); }
+        .tag-status.hazard { background: var(--accent-crimson-subtle); color: var(--accent-crimson); border: 1px solid var(--accent-crimson-border); }
+        .tag-status.neutral { background: var(--surface-subtle); color: var(--text-secondary); border: 1px solid var(--border-hairline); }
+        .tag-status.active { background: var(--accent-blue-subtle); color: var(--accent-blue); border: 1px solid var(--accent-blue-border); }
+    </style>
+</head>
+<body>
+
+    <div class="progress-rail">
+        <div class="progress-indicator" id="progressIndicator"></div>
+    </div>
+
+    <div class="deck-viewport">
+        <main class="deck-stage" id="deckStage">
+
+            <!-- =======================================================
+                 SLIDE 1: TITLE & EXECUTIVE WAKE-UP CALL
+                 ======================================================= -->
+            <section class="slide active" id="slide-1">
+                <div class="slide-header">
+                    <div>
+                        <div class="slide-category danger"><div class="indicator-box"></div> EXECUTIVE THESIS &amp; THE IDENTITY CRISIS</div>
+                        <h1 class="slide-title">Data, Data Everywhere... But Is Your Enterprise Identity Safe?</h1>
+                        <p class="slide-subtitle">How 815 Million compromised records &amp; statutory ₹250-Crore DPDP penalties dismantled India's legacy identity storage model.</p>
+                    </div>
+                    <div class="slide-header-meta">
+                        <div class="slide-number-box">01 / 09</div>
+                        <div class="slide-confidential-tag">BOARD DILIGENCE DOSSIER</div>
+                    </div>
+                </div>
+
+                <div class="slide-body">
+                    <!-- Top: Historical Breach Index & Timeline -->
+                    <div class="frame-box" style="flex: 1.2; padding: 16px 22px; justify-content: space-between;">
+                        <div class="frame-header">
+                            <span>EXHIBIT 1: INDIA ENTERPRISE IDENTITY BREACH SEVERITY TIMELINE &amp; THREAT VECTOR (2018–2026)</span>
+                            <span style="color: var(--accent-crimson); font-weight: 800;">TOTAL COMPROMISED RECORDS: &gt; 1.1 BILLION</span>
+                        </div>
+
+                        <!-- 5 Milestone Cards in a Grid filling width and height -->
+                        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; flex: 1; align-items: stretch; margin: 4px 0 10px 0;">
+                            <!-- Milestone 1 -->
+                            <div style="border: 1px solid var(--border-hairline); border-top: 4px solid #334155; background: var(--surface-subtle); padding: 14px 16px; display: flex; flex-direction: column; justify-content: space-between;">
+                                <div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                        <span class="mono" style="font-size: 13px; font-weight: 800; color: var(--text-primary);">2018</span>
+                                        <span class="tag-status neutral" style="font-size: 10px; padding: 2px 6px;">CONSTITUTIONAL</span>
+                                    </div>
+                                    <div style="font-size: 15px; font-weight: 800; color: var(--text-primary); line-height: 1.3;">Supreme Court Puttaswamy</div>
+                                    <div style="font-size: 13px; color: var(--text-secondary); margin-top: 6px; line-height: 1.45;">Section 57 struck down: private companies legally barred from storing raw 12-digit Aadhaar.</div>
+                                </div>
+                                <div style="border-top: 1px solid var(--border-hairline); padding-top: 8px; font-family: var(--font-mono); font-size: 11.5px; color: var(--text-muted);">
+                                    <strong>Consequence:</strong> Ad-hoc redaction &amp; tokenization vaults.
+                                </div>
+                            </div>
+
+                            <!-- Milestone 2 -->
+                            <div style="border: 1px solid var(--accent-crimson-border); border-top: 4px solid var(--accent-crimson); background: var(--accent-crimson-subtle); padding: 14px 16px; display: flex; flex-direction: column; justify-content: space-between;">
+                                <div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                        <span class="mono" style="font-size: 13px; font-weight: 800; color: var(--accent-crimson);">2021</span>
+                                        <span class="tag-status hazard" style="font-size: 10px; padding: 2px 6px;">CLOUD LEAK</span>
+                                    </div>
+                                    <div style="font-size: 15px; font-weight: 800; color: var(--accent-crimson); line-height: 1.3;">MobiKwik S3 Bucket Breach</div>
+                                    <div style="font-size: 13px; color: #991B1B; margin-top: 6px; line-height: 1.45;"><strong>3.5M KYC PDFs Dumped</strong>: Full Aadhaar cards, PAN scans, and selfie video KYC sold publicly on dark-web forums.</div>
+                                </div>
+                                <div style="border-top: 1px solid var(--accent-crimson-border); padding-top: 8px; font-family: var(--font-mono); font-size: 11.5px; color: var(--accent-crimson);">
+                                    <strong>Consequence:</strong> Proved cloud document vaults fail.
+                                </div>
+                            </div>
+
+                            <!-- Milestone 3 -->
+                            <div style="border: 2px solid var(--accent-crimson); border-top: 5px solid var(--accent-crimson); background: #FEF2F2; padding: 14px 16px; display: flex; flex-direction: column; justify-content: space-between;">
+                                <div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                        <span class="mono" style="font-size: 13px; font-weight: 800; color: var(--accent-crimson);">2023</span>
+                                        <span class="tag-status hazard" style="font-size: 10px; padding: 2px 6px; background: #DC2626; color: #fff;">MASS BREACH</span>
+                                    </div>
+                                    <div style="font-size: 15px; font-weight: 800; color: var(--accent-crimson); line-height: 1.3;">ICMR / Aadhaar Dark Web Leak</div>
+                                    <div style="font-size: 13px; color: #991B1B; margin-top: 6px; line-height: 1.45;"><strong>815M Indian Records Sold ($80k)</strong>: Largest PII breach in Indian history; over 70% of adult population exposed.</div>
+                                </div>
+                                <div style="border-top: 1px solid #FECACA; padding-top: 8px; font-family: var(--font-mono); font-size: 11.5px; color: var(--accent-crimson); font-weight: 700;">
+                                    <strong>Consequence:</strong> Fuel for syndicated mule accounts.
+                                </div>
+                            </div>
+
+                            <!-- Milestone 4 -->
+                            <div style="border: 1px solid var(--accent-blue-border); border-top: 4px solid var(--accent-blue); background: var(--accent-blue-subtle); padding: 14px 16px; display: flex; flex-direction: column; justify-content: space-between;">
+                                <div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                        <span class="mono" style="font-size: 13px; font-weight: 800; color: var(--accent-blue);">2024</span>
+                                        <span class="tag-status active" style="font-size: 10px; padding: 2px 6px;">PARLIAMENT</span>
+                                    </div>
+                                    <div style="font-size: 15px; font-weight: 800; color: var(--accent-blue); line-height: 1.3;">DPDP Act Enforcement</div>
+                                    <div style="font-size: 13px; color: #1E40AF; margin-top: 6px; line-height: 1.45;"><strong>₹250-Crore Fines</strong>: Section 6(1) Data Minimization + Section 33 penalties make holding raw PII a board liability.</div>
+                                </div>
+                                <div style="border-top: 1px solid var(--accent-blue-border); padding-top: 8px; font-family: var(--font-mono); font-size: 11.5px; color: var(--accent-blue);">
+                                    <strong>Consequence:</strong> Document storage becomes toxic liability.
+                                </div>
+                            </div>
+
+                            <!-- Milestone 5 -->
+                            <div style="border: 2px solid var(--accent-green); border-top: 5px solid var(--accent-green); background: var(--accent-green-subtle); padding: 14px 16px; display: flex; flex-direction: column; justify-content: space-between;">
+                                <div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                        <span class="mono" style="font-size: 13px; font-weight: 800; color: var(--accent-green);">2026 (NOW)</span>
+                                        <span class="tag-status safe" style="font-size: 10px; padding: 2px 6px; background: var(--accent-green); color: #fff;">PARADIGM SHIFT</span>
+                                    </div>
+                                    <div style="font-size: 15px; font-weight: 800; color: var(--accent-green); line-height: 1.3;">ZERO-ID Protocol</div>
+                                    <div style="font-size: 13px; color: #065F46; margin-top: 6px; line-height: 1.45;"><strong>0 Bytes PII Storage Model</strong>: Client-side zk-SNARKs + hardware enclave biometric signatures replace document hoarding.</div>
+                                </div>
+                                <div style="border-top: 1px solid var(--accent-green-border); padding-top: 8px; font-family: var(--font-mono); font-size: 11.5px; color: var(--accent-green); font-weight: 800;">
+                                    <strong>Consequence:</strong> 100% immune to leaks &amp; DPDP fines.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3-Pillar Threat Assessment Bar across the bottom -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; background: #F1F5F9; border: 1px solid var(--border-hairline); padding: 12px 18px; border-radius: 4px;">
+                            <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.45;">
+                                <strong style="color: var(--accent-crimson); font-family: var(--font-mono);">01. DARK-WEB SUPPLY:</strong> Over 70% of Indian adults' Aadhaar XML &amp; scans circulate on cyber forums, enabling instant syndicate forgery.
+                            </div>
+                            <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.45;">
+                                <strong style="color: var(--accent-amber); font-family: var(--font-mono);">02. CORPORATE EXPOSURE:</strong> Every unredacted PDF stored in S3 creates an existential ₹250-Crore fine under DPDP Act Section 33.
+                            </div>
+                            <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.45;">
+                                <strong style="color: var(--accent-green); font-family: var(--font-mono);">03. ZERO-ID RESOLUTION:</strong> Cryptographic zero-knowledge verification eliminates document collection entirely at 0.4s speed.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom: Strategic Value Proposition & Core Metric Rail -->
+                    <div style="flex: 1.1; display: grid; grid-template-columns: 1.25fr 1fr; gap: 20px; min-height: 0;">
+                        <!-- The Executive Thesis -->
+                        <div class="frame-box" style="background: var(--surface-contrast); color: var(--text-inverse); border: none; padding: 20px 26px; justify-content: space-between;">
+                            <div>
+                                <div class="frame-header" style="border-color: rgba(255,255,255,0.15); color: #94A3B8; margin-bottom: 8px; padding-bottom: 6px;">
+                                    <span>THE CORE VALUE PROPOSITION</span>
+                                    <span style="color: #60A5FA; font-weight: 700;">SERIES A THESIS</span>
+                                </div>
+                                <h2 style="font-family: var(--font-display); font-size: 24px; font-weight: 800; line-height: 1.25; margin-bottom: 8px; color: #FFFFFF; letter-spacing: -0.02em;">
+                                    Eliminating Enterprise Identity Liabilities Through Client-Side Cryptographic Attestation
+                                </h2>
+                                <p style="font-size: 14.5px; color: #CBD5E1; line-height: 1.45; margin-bottom: 10px;">
+                                    ZERO-ID replaces centralized document hoarding with client-side Zero-Knowledge proofs and hardware enclave biometric signatures. Indian enterprises verify customer due diligence in <strong>0.4 seconds</strong> while permanently eliminating raw PII from their servers.
+                                </p>
+
+                                <!-- Side-by-Side Paradigm Contrast Box -->
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 10px 14px; border-radius: 4px;">
+                                    <div style="border-left: 3px solid #EF4444; padding-left: 8px;">
+                                        <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #F87171;">LEGACY: HOARD &amp; PRAY</div>
+                                        <div style="font-size: 12px; color: #94A3B8; margin-top: 2px;">Upload PDFs → S3 Bucket → Dark-Web Breach → ₹250-Cr Fine</div>
+                                    </div>
+                                    <div style="border-left: 3px solid #10B981; padding-left: 8px;">
+                                        <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #34D399;">ZERO-ID: VERIFY &amp; FORGET</div>
+                                        <div style="font-size: 12px; color: #E2E8F0; margin-top: 2px;">Phone zk-Proof → Ephemeral Pipe → 0 Bytes Stored → 100% Immune</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 8px; margin-top: 8px;">
+                                <div>
+                                    <div style="font-family: var(--font-mono); font-size: 11px; color: #60A5FA; font-weight: 800;">ZERO STORAGE</div>
+                                    <div style="font-size: 12.5px; color: #E2E8F0; margin-top: 2px;">0 bytes of Aadhaar/PAN stored</div>
+                                </div>
+                                <div>
+                                    <div style="font-family: var(--font-mono); font-size: 11px; color: #34D399; font-weight: 800;">STATUTORY SAFE</div>
+                                    <div style="font-size: 12.5px; color: #E2E8F0; margin-top: 2px;">100% RBI, PMLA &amp; DPDP compliant</div>
+                                </div>
+                                <div>
+                                    <div style="font-family: var(--font-mono); font-size: 11px; color: #FCD34D; font-weight: 800;">INSTANT VERIFY</div>
+                                    <div style="font-size: 12.5px; color: #E2E8F0; margin-top: 2px;">0.4s hardware enclave biometric</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4 Metric Cards Grid -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; height: 100%;">
+                            <div class="frame-box" style="background: var(--surface-subtle); padding: 16px 18px; justify-content: space-between; border-left: 5px solid var(--accent-green);">
+                                <div>
+                                    <div class="kpi-value" style="color: var(--accent-green); font-size: 48px;">0 Bytes</div>
+                                    <div class="kpi-label">PII Transmitted or Stored</div>
+                                </div>
+                                <div style="font-size: 12.5px; color: var(--text-muted); border-top: 1px solid var(--border-hairline); padding-top: 6px;">
+                                    <strong>Zero Attack Surface:</strong> Eliminates document hoarding &amp; server leaks permanently.
+                                </div>
+                            </div>
+                            <div class="frame-box" style="background: var(--surface-subtle); padding: 16px 18px; justify-content: space-between; border-left: 5px solid var(--accent-crimson);">
+                                <div>
+                                    <div class="kpi-value" style="color: var(--accent-crimson); font-size: 48px;">₹250 Cr</div>
+                                    <div class="kpi-label">Statutory Fine Immunity</div>
+                                </div>
+                                <div style="font-size: 12.5px; color: var(--text-muted); border-top: 1px solid var(--border-hairline); padding-top: 6px;">
+                                    <strong>DPDP Section 33 Safe:</strong> Math-guaranteed non-possession protects the balance sheet.
+                                </div>
+                            </div>
+                            <div class="frame-box" style="background: var(--surface-subtle); padding: 16px 18px; justify-content: space-between; border-left: 5px solid var(--accent-blue);">
+                                <div>
+                                    <div class="kpi-value" style="color: var(--accent-blue); font-size: 48px;">96.7%</div>
+                                    <div class="kpi-label">Gross Margin Profile</div>
+                                </div>
+                                <div style="font-size: 12.5px; color: var(--text-muted); border-top: 1px solid var(--border-hairline); padding-top: 6px;">
+                                    <strong>₹3.00 Price vs ₹0.10 COGS:</strong> Zero GPU cloud costs; phone executes computation.
+                                </div>
+                            </div>
+                            <div class="frame-box" style="background: var(--surface-subtle); padding: 16px 18px; justify-content: space-between; border-left: 5px solid var(--text-primary);">
+                                <div>
+                                    <div class="kpi-value" style="color: var(--text-primary); font-size: 48px;">0.4 sec</div>
+                                    <div class="kpi-label">End-to-End Latency</div>
+                                </div>
+                                <div style="font-size: 12.5px; color: var(--text-muted); border-top: 1px solid var(--border-hairline); padding-top: 6px;">
+                                    <strong>Hardware Silicon Speed:</strong> vs 12-minute manual video calls &amp; 45-min gate queues.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <div class="slide-footer-sources">
+                        <span><strong>Primary Verification Sources:</strong> Resecurity Cyber Intelligence Dossier (Oct 2023), Gazette of India Notification S.O. 3607(E)</span>
+                    </div>
+                    <div>ZERO-ID INC. • FOUNDRY DILIGENCE BRIEFING</div>
+                </div>
+            </section>
+
+
+            <!-- =======================================================
+                 SLIDE 2: THE PROBLEM (THE REGULATORY SQUEEZE)
+                 ======================================================= -->
+            <section class="slide" id="slide-2">
+                <div class="slide-header">
+                    <div>
+                        <div class="slide-category danger"><div class="indicator-box"></div> PROBLEM STATEMENT: THE REGULATORY DOUBLE-BIND</div>
+                        <h1 class="slide-title">The Enterprise KYC Squeeze: Regulatory Friction vs Data Liability</h1>
+                        <p class="slide-subtitle">Enterprises are trapped: RBI &amp; PMLA mandate verification, but hoarding customer documents creates catastrophic ₹250-Cr DPDP risk.</p>
+                    </div>
+                    <div class="slide-header-meta">
+                        <div class="slide-number-box">02 / 09</div>
+                        <div class="slide-confidential-tag">MARKET FRICTION ANALYSIS</div>
+                    </div>
+                </div>
+
+                <div class="slide-body">
+                    <div style="flex: 1; display: grid; grid-template-columns: 1fr 1.25fr; gap: 20px; min-height: 0;">
+                        
+                        <!-- Left: Funnel Abandonment Curve (SVG Graphic) -->
+                        <div class="frame-box" style="justify-content: space-between;">
+                            <div class="frame-header">
+                                <span>EXHIBIT 2A: TRADITIONAL KYC FUNNEL DECAY &amp; ABANDONMENT (INDUSTRY BENCHMARK)</span>
+                                <span class="tag-status hazard">42% AGGREGATE DROP-OFF</span>
+                            </div>
+
+                            <div style="flex: 1; width: 100%; min-height: 0; display: flex; align-items: center; justify-content: center;">
+                                <svg viewBox="0 0 740 230" style="width: 100%; height: 100%; max-height: 230px;" preserveAspectRatio="xMidYMid meet">
+                                    <!-- Axes -->
+                                    <line x1="70" y1="15" x2="70" y2="175" stroke="#CBD5E1" stroke-width="1.5" />
+                                    <line x1="70" y1="175" x2="710" y2="175" stroke="#CBD5E1" stroke-width="1.5" />
+
+                                    <!-- Gridlines -->
+                                    <line x1="70" y1="55" x2="710" y2="55" stroke="#F1F5F9" stroke-width="1" />
+                                    <line x1="70" y1="115" x2="710" y2="115" stroke="#F1F5F9" stroke-width="1" />
+
+                                    <!-- Y Axis Labels -->
+                                    <text x="60" y="20" font-family="JetBrains Mono" font-size="12" fill="#64748B" text-anchor="end">100%</text>
+                                    <text x="60" y="60" font-family="JetBrains Mono" font-size="12" fill="#64748B" text-anchor="end">75%</text>
+                                    <text x="60" y="120" font-family="JetBrains Mono" font-size="12" fill="#64748B" text-anchor="end">50%</text>
+                                    <text x="60" y="180" font-family="JetBrains Mono" font-size="12" fill="#64748B" text-anchor="end">0%</text>
+
+                                    <!-- Step Curve Fill Area -->
+                                    <path d="M 120 20 L 280 60 L 470 110 L 660 130 L 660 175 L 120 175 Z" fill="rgba(239, 68, 68, 0.08)" />
+
+                                    <!-- Step Curve Line -->
+                                    <polyline points="120,20 280,60 470,110 660,130" fill="none" stroke="#DC2626" stroke-width="4" />
+
+                                    <!-- Data Points -->
+                                    <circle cx="120" cy="20" r="7" fill="#1D4ED8" />
+                                    <circle cx="280" cy="60" r="7" fill="#DC2626" />
+                                    <circle cx="470" cy="110" r="7" fill="#DC2626" />
+                                    <circle cx="660" cy="130" r="8" fill="#B91C1C" />
+
+                                    <!-- Point Labels -->
+                                    <text x="120" y="10" font-family="JetBrains Mono" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle">100% (Install)</text>
+                                    <text x="280" y="48" font-family="JetBrains Mono" font-size="13" font-weight="700" fill="#DC2626" text-anchor="middle">84% (Phone OTP)</text>
+                                    <text x="470" y="98" font-family="JetBrains Mono" font-size="13" font-weight="700" fill="#DC2626" text-anchor="middle">68% (Doc Upload)</text>
+                                    <text x="660" y="118" font-family="JetBrains Mono" font-size="14" font-weight="800" fill="#B91C1C" text-anchor="middle">58% (KYC Done)</text>
+
+                                    <!-- Friction Point Callouts -->
+                                    <line x1="470" y1="115" x2="470" y2="145" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="3,3" />
+                                    <text x="470" y="160" font-family="Inter" font-size="11.5" font-weight="700" fill="#B91C1C" text-anchor="middle">Friction: Blurry Scans &amp; Form Errors</text>
+
+                                    <line x1="660" y1="135" x2="660" y2="145" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="3,3" />
+                                    <text x="660" y="160" font-family="Inter" font-size="12" font-weight="800" fill="#B91C1C" text-anchor="middle">42% Paid CAC Destroyed</text>
+
+                                    <!-- X Axis Step Labels -->
+                                    <text x="120" y="198" font-family="JetBrains Mono" font-size="11.5" font-weight="600" fill="#64748B" text-anchor="middle">Step 1: Download</text>
+                                    <text x="280" y="198" font-family="JetBrains Mono" font-size="11.5" font-weight="600" fill="#64748B" text-anchor="middle">Step 2: Mobile Auth</text>
+                                    <text x="470" y="198" font-family="JetBrains Mono" font-size="11.5" font-weight="600" fill="#64748B" text-anchor="middle">Step 3: Doc Scan</text>
+                                    <text x="660" y="198" font-family="JetBrains Mono" font-size="11.5" font-weight="600" fill="#64748B" text-anchor="middle">Step 4: Verification</text>
+                                </svg>
+                            </div>
+
+                            <!-- 4 Impact Metric Cards -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; border-top: 1px solid var(--border-hairline); padding-top: 10px; margin-top: 6px;">
+                                <div style="background: var(--surface-subtle); padding: 10px 12px; border: 1px solid var(--border-hairline); border-left: 4px solid var(--accent-crimson);">
+                                    <div style="font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; color: var(--accent-crimson);">CAC DESTRUCTION</div>
+                                    <div style="font-size: 16px; font-weight: 800; color: var(--text-primary); margin-top: 2px;">₹1,200 Lost / User</div>
+                                    <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">Wasted marketing spend on ad platforms</div>
+                                </div>
+                                <div style="background: var(--surface-subtle); padding: 10px 12px; border: 1px solid var(--border-hairline); border-left: 4px solid var(--accent-crimson);">
+                                    <div style="font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; color: var(--accent-crimson);">ABANDONMENT CLIFF</div>
+                                    <div style="font-size: 16px; font-weight: 800; color: var(--text-primary); margin-top: 2px;">42% Drop-off</div>
+                                    <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">Users drop at camera OCR screen</div>
+                                </div>
+                                <div style="background: var(--surface-subtle); padding: 10px 12px; border: 1px solid var(--border-hairline); border-left: 4px solid var(--accent-amber);">
+                                    <div style="font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; color: var(--accent-amber);">MANUAL REVIEW</div>
+                                    <div style="font-size: 16px; font-weight: 800; color: var(--text-primary); margin-top: 2px;">₹35.00 / Check</div>
+                                    <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">Tier-2 BPO manual call centers</div>
+                                </div>
+                                <div style="background: var(--surface-subtle); padding: 10px 12px; border: 1px solid var(--border-hairline); border-left: 4px solid var(--accent-blue);">
+                                    <div style="font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; color: var(--accent-blue);">INDUSTRIAL WEIGHBRIDGES</div>
+                                    <div style="font-size: 16px; font-weight: 800; color: var(--text-primary); margin-top: 2px;">45-Min Gate Queues</div>
+                                    <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">Congestion &amp; WhatsApp photo leaks at plants</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right: The Regulatory Collision Matrix -->
+                        <div class="frame-box" style="justify-content: space-between;">
+                            <div class="frame-header">
+                                <span>EXHIBIT 2B: THE DUAL-REGULATORY COLLISION MATRIX</span>
+                                <span class="tag-status neutral">STATUTORY ANALYSIS</span>
+                            </div>
+
+                            <table class="inst-table" style="flex: 1; height: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 28%;">Regulatory Force</th>
+                                        <th style="width: 36%;">Compliance Mandate</th>
+                                        <th style="width: 36%;">Direct Corporate Consequence</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div style="font-weight: 800; font-size: 15px; color: var(--text-primary);">RBI &amp; PMLA</div>
+                                            <div style="font-family: var(--font-mono); font-size: 11.5px; color: var(--accent-blue);">Rule 9 Due Diligence</div>
+                                        </td>
+                                        <td>Must verify officially valid documents (OVD) for every loan, account, and credit line.</td>
+                                        <td>
+                                            <span style="font-weight: 800; color: var(--accent-crimson);">₹20 to ₹35 per check</span> spent on manual BPO review centers and OCR clouds.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div style="font-weight: 800; font-size: 15px; color: var(--text-primary);">DPDP Act 2023</div>
+                                            <div style="font-family: var(--font-mono); font-size: 11.5px; color: var(--accent-crimson);">Section 6(1)</div>
+                                        </td>
+                                        <td>Legally enforces <strong>Data Minimization</strong>. Prohibits collecting excess personal data beyond immediate purpose.</td>
+                                        <td>
+                                            Hoarding unredacted Aadhaar PDFs is now technically a <strong>statutory violation</strong>.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div style="font-weight: 800; font-size: 15px; color: var(--text-primary);">DPDP Act 2023</div>
+                                            <div style="font-family: var(--font-mono); font-size: 11.5px; color: var(--accent-crimson);">Section 33</div>
+                                        </td>
+                                        <td>Imposes strict corporate liability for failing to safeguard personal data against breaches.</td>
+                                        <td>
+                                            <span style="font-weight: 800; color: var(--accent-crimson);">Fines up to ₹250 Crores</span> per incident; board directors personally liable.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div style="font-weight: 800; font-size: 15px; color: var(--text-primary);">Supreme Court</div>
+                                            <div style="font-family: var(--font-mono); font-size: 11.5px; color: var(--accent-blue);">Puttaswamy (2018)</div>
+                                        </td>
+                                        <td>Restricts private firms from storing 12-digit Aadhaar numbers in databases.</td>
+                                        <td>
+                                            Enterprises forced to either redact or build high-risk proprietary tokenization vaults.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div style="font-weight: 800; font-size: 15px; color: var(--text-primary);">Hotel &amp; Visitor Registers</div>
+                                            <div style="font-family: var(--font-mono); font-size: 11.5px; color: var(--accent-amber);">Sarais Act 1867 / Police Registers</div>
+                                        </td>
+                                        <td>Front desks photocopy citizen Aadhaar cards into paper binders or unencrypted folders.</td>
+                                        <td>
+                                            Violates DPDP Act (up to ₹250 Cr penalty), yet businesses face police fines if registers are blank.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div style="background: var(--accent-blue-subtle); border-left: 4px solid var(--accent-blue); padding: 10px 14px; font-size: 13.5px; color: var(--text-secondary); margin-top: 8px;">
+                                <strong>The Strategic Resolution:</strong> ZERO-ID resolves this dual-regulatory paradox: 100% statutory verification compliance without touching, possessing, or storing customer PII.
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <div class="slide-footer-sources">
+                        <span><strong>Data References:</strong> BFSI Customer Acquisition Cost Index 2025; Reserve Bank of India Master Directions on KYC (Updated 2024)</span>
+                    </div>
+                    <div>PAGE 02 • PROBLEM ARCHITECTURE</div>
+                </div>
+            </section>
+
+
+            <!-- =======================================================
+                 SLIDE 3: THE SOLUTION (THE BLIND VERIFICATION PROTOCOL)
+                 ======================================================= -->
+            <section class="slide" id="slide-3">
+                <div class="slide-header">
+                    <div>
+                        <div class="slide-category success"><div class="indicator-box"></div> SYSTEM ARCHITECTURE &amp; THE PROTOCOL</div>
+                        <h1 class="slide-title">The Blind Verification Protocol: 100% Certainty, Zero Storage</h1>
+                        <p class="slide-subtitle">A mathematically unforgeable verification conduit where enterprise verifiers receive certified truth without touching raw customer PII.</p>
+                    </div>
+                    <div class="slide-header-meta">
+                        <div class="slide-number-box">03 / 09</div>
+                        <div class="slide-confidential-tag">PROPRIETARY SPECIFICATION</div>
+                    </div>
+                </div>
+
+                <div class="slide-body">
+                    <!-- Full-Width System Schematic Pipeline -->
+                    <div class="frame-box" style="flex: 1.3; padding: 18px 24px;">
+                        <div class="frame-header">
+                            <span>EXHIBIT 3: ZERO-ID CLIENT-SIDE CRYPTOGRAPHIC ATTESTATION PIPELINE (END-TO-END ARCHITECTURE)</span>
+                            <span class="tag-status safe">0 BYTES CLOUD STORAGE</span>
+                        </div>
+
+                        <div class="pipeline-flow">
+                            <!-- Node 1: Official Trust Anchor -->
+                            <div class="pipeline-card node-1">
+                                <div>
+                                    <div class="pipeline-tag" style="color: var(--accent-blue);">NODE 01: TRUST ANCHOR</div>
+                                    <div class="pipeline-title">UIDAI RSA-2048 Data</div>
+                                    <div class="pipeline-desc">Digitally signed XML or Secure QR code issued directly by the Government of India.</div>
+                                    
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid var(--accent-blue); padding: 8px 10px; margin-top: 12px; font-size: 12px; color: var(--text-secondary);">
+                                        <strong>Input:</strong> Official XML / Offline QR<br>
+                                        <strong>Authority:</strong> UIDAI Gov Key
+                                    </div>
+                                </div>
+                                <div class="pipeline-chip" style="background: var(--accent-blue-subtle); color: var(--accent-blue); border: 1px solid var(--accent-blue-border);">
+                                    SHA-256 SIGNATURE VALID
+                                </div>
+                            </div>
+
+                            <div class="pipeline-arrow">→</div>
+
+                            <!-- Node 2: Hardware Binding -->
+                            <div class="pipeline-card node-2">
+                                <div>
+                                    <div class="pipeline-tag" style="color: #7C3AED;">NODE 02: HARDWARE ENCLAVE</div>
+                                    <div class="pipeline-title">Client Silicon Key</div>
+                                    <div class="pipeline-desc">Device Secure Enclave generates non-exportable biometric keypair bound to phone hardware.</div>
+
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid #8B5CF6; padding: 8px 10px; margin-top: 12px; font-size: 12px; color: var(--text-secondary);">
+                                        <strong>Key Storage:</strong> Apple SE / Titan M2<br>
+                                        <strong>Anti-Mule:</strong> FIDO2 Biometric
+                                    </div>
+                                </div>
+                                <div class="pipeline-chip" style="background: #F5F3FF; color: #7C3AED; border: 1px solid #DDD6FE;">
+                                    SECP256R1 HARDWARE LOCKED
+                                </div>
+                            </div>
+
+                            <div class="pipeline-arrow">→</div>
+
+                            <!-- Node 3: Zero-Knowledge Prover -->
+                            <div class="pipeline-card node-3">
+                                <div>
+                                    <div class="pipeline-tag" style="color: var(--accent-green);">NODE 03: CLIENT ZK-SNARK</div>
+                                    <div class="pipeline-title">WASM Prover Circuit</div>
+                                    <div class="pipeline-desc">Zero-knowledge circuit computes proof of valid identity without exposing national ID number.</div>
+
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid var(--accent-green); padding: 8px 10px; margin-top: 12px; font-size: 12px; color: var(--text-secondary);">
+                                        <strong>Execution:</strong> Client WASM (380ms)<br>
+                                        <strong>Output:</strong> 128-byte zk-Proof
+                                    </div>
+                                </div>
+                                <div class="pipeline-chip" style="background: var(--accent-green-subtle); color: var(--accent-green); border: 1px solid var(--accent-green-border);">
+                                    GROTH16 PROOF GENERATED
+                                </div>
+                            </div>
+
+                            <div class="pipeline-arrow">→</div>
+
+                            <!-- Node 4: Blind Ephemeral Conduit -->
+                            <div class="pipeline-card node-4">
+                                <div>
+                                    <div class="pipeline-tag" style="color: var(--accent-amber);">NODE 04: VERIFICATION RAIL</div>
+                                    <div class="pipeline-title">Ephemeral Relay Gateway</div>
+                                    <div class="pipeline-desc">Verifies math proof &amp; checks revocation on Algorand ledger in &lt; 40 milliseconds. Zero persistence.</div>
+
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid var(--accent-amber); padding: 8px 10px; margin-top: 12px; font-size: 12px; color: var(--text-secondary);">
+                                        <strong>Memory State:</strong> RAM-only buffer<br>
+                                        <strong>Storage:</strong> Purged on Response
+                                    </div>
+                                </div>
+                                <div class="pipeline-chip" style="background: var(--accent-amber-subtle); color: var(--accent-amber); border: 1px solid var(--accent-amber-border);">
+                                    REVOCATION CHECK: PASS
+                                </div>
+                            </div>
+
+                            <div class="pipeline-arrow">→</div>
+
+                            <!-- Node 5: Verifier Register -->
+                            <div class="pipeline-card node-5">
+                                <div>
+                                    <div class="pipeline-tag" style="color: #38BDF8;">NODE 05: VERIFIER</div>
+                                    <div class="pipeline-title">Statutory Legal Register</div>
+                                    <div class="pipeline-desc">Court-admissible verification log entry generated under IT Act Sec 4 &amp; 5. Zero customer PII stored on enterprise balance sheet.</div>
+
+                                    <div style="background: rgba(255,255,255,0.1); border-left: 3px solid #38BDF8; padding: 8px 10px; margin-top: 12px; font-size: 12px; color: #E2E8F0;">
+                                        <strong>Audit Log:</strong> Nullifier + Timestamp<br>
+                                        <strong>DPDP Exposure:</strong> 100% Immune (₹0)
+                                    </div>
+                                </div>
+                                <div class="pipeline-chip" style="background: rgba(16, 185, 129, 0.2); color: #34D399; border: 1px solid #10B981;">
+                                    VERIFIED: TRUE (0 PII)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lower Architecture Features -->
+                    <div style="flex: 1.15; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; min-height: 0;">
+                        <!-- Feature 1 -->
+                        <div class="frame-box" style="justify-content: space-between; border-left: 5px solid var(--accent-blue); padding: 16px 20px;">
+                            <div>
+                                <div class="frame-header" style="color: var(--accent-blue); margin-bottom: 6px;">
+                                    <span>FEATURE 1: MULE ACCOUNT IMMUNITY</span>
+                                    <span class="tag-status active" style="font-size: 10px; padding: 2px 6px;">SILICON ANCHOR</span>
+                                </div>
+                                <h3 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">Hardware Silicon Biometric Anchor</h3>
+                                
+                                <div style="display: flex; flex-direction: column; gap: 7px;">
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid #EF4444; padding: 7px 10px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.4;">
+                                        <strong style="color: var(--accent-crimson);">The Threat:</strong> Stolen Aadhaar XML files traded on Telegram allow criminal syndicates to forge fake borrower identities at scale.
+                                    </div>
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid var(--accent-blue); padding: 7px 10px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.4;">
+                                        <strong style="color: var(--accent-blue);">Cryptographic Fix:</strong> Credentials are cryptographically locked inside Apple Secure Enclave or Android Titan M2 chip.
+                                    </div>
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid var(--accent-green); padding: 7px 10px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.4;">
+                                        <strong style="color: var(--accent-green);">Enterprise Impact:</strong> Valid proofs require physical thumbprint; 100% immune to remote attacks and AI deepfakes.
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-hairline); padding-top: 8px; margin-top: 8px;">
+                                <span style="font-family: var(--font-mono); font-size: 11.5px; font-weight: 800; color: var(--accent-blue);">DEFENSE BENCHMARK:</span>
+                                <span class="tag-status safe" style="font-size: 11px;">100% IMMUNE TO MULE FRAUD</span>
+                            </div>
+                        </div>
+
+                        <!-- Feature 2 -->
+                        <div class="frame-box" style="justify-content: space-between; border-left: 5px solid var(--accent-green); padding: 16px 20px;">
+                            <div>
+                                <div class="frame-header" style="color: var(--accent-green); margin-bottom: 6px;">
+                                    <span>FEATURE 2: DUAL VERIFICATION MODES</span>
+                                    <span class="tag-status safe" style="font-size: 10px; padding: 2px 6px;">DATA MINIMIZATION</span>
+                                </div>
+                                <h3 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">Selective Disclosure Engine</h3>
+                                
+                                <div style="display: flex; flex-direction: column; gap: 7px;">
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid #EF4444; padding: 7px 10px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.4;">
+                                        <strong style="color: var(--accent-crimson);">The Threat:</strong> Traditional KYC forces collection of full Aadhaar copies even for age or gate checks, creating massive DPDP liabilities.
+                                    </div>
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid var(--accent-blue); padding: 7px 10px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.4;">
+                                        <strong style="color: var(--accent-blue);">Regulated Entity Mode:</strong> Verifies Legal Name + Age + PAN link for NBFCs with zero excess attribute collection.
+                                    </div>
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid var(--accent-green); padding: 7px 10px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.4;">
+                                        <strong style="color: var(--accent-green);">Zero-Byte Mode:</strong> Instant Boolean YES/NO (e.g., Age ≥ 18: TRUE) for plant gates and logistics with 0 bytes personal data.
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-hairline); padding-top: 8px; margin-top: 8px;">
+                                <span style="font-family: var(--font-mono); font-size: 11.5px; font-weight: 800; color: var(--accent-green);">COMPLIANCE BENCHMARK:</span>
+                                <span class="tag-status safe" style="font-size: 11px;">DPDP SEC 6(1) PERFECT FIT</span>
+                            </div>
+                        </div>
+
+                        <!-- Feature 3 -->
+                        <div class="frame-box" style="justify-content: space-between; border-left: 5px solid #8B5CF6; padding: 16px 20px;">
+                            <div>
+                                <div class="frame-header" style="color: #7C3AED; margin-bottom: 6px;">
+                                    <span>FEATURE 3: 3.8S ON-CHAIN STATE REVOCATION</span>
+                                    <span class="tag-status neutral" style="font-size: 10px; padding: 2px 6px; color: #7C3AED;">DECENTRALIZED</span>
+                                </div>
+                                <h3 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">Decentralized Kill-Switch Anchor</h3>
+                                
+                                <div style="display: flex; flex-direction: column; gap: 7px;">
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid #EF4444; padding: 7px 10px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.4;">
+                                        <strong style="color: var(--accent-crimson);">The Threat:</strong> If a driver or employee is revoked or phone is lost, centralized blacklists take hours or days to propagate across verifiers.
+                                    </div>
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid #7C3AED; padding: 7px 10px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.4;">
+                                        <strong style="color: #7C3AED;">Cryptographic Fix:</strong> Revocation state is anchored on Algorand's immutable ledger; citizens trigger instant kill-switch in 3.8 seconds.
+                                    </div>
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid var(--accent-green); padding: 7px 10px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.4;">
+                                        <strong style="color: var(--accent-green);">Enterprise Impact:</strong> Sub-8-paise transaction cost ensures seamless, system-wide fraud termination across all plants and apps.
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-hairline); padding-top: 8px; margin-top: 8px;">
+                                <span style="font-family: var(--font-mono); font-size: 11.5px; font-weight: 800; color: #7C3AED;">REVOCATION SPEED:</span>
+                                <span class="tag-status safe" style="font-size: 11px; background: #F5F3FF; color: #7C3AED; border-color: #DDD6FE;">&lt; 4 SECONDS ON-CHAIN</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <div class="slide-footer-sources">
+                        <span><strong>Cryptographic Standards:</strong> Groth16 zk-SNARKs over BN254; FIDO2 / WebAuthn W3C Recommendation; Poseidon Cryptographic Hash Function</span>
+                    </div>
+                    <div>PAGE 03 • TECHNICAL SPECIFICATION</div>
+                </div>
+            </section>
+
+
+            <!-- =======================================================
+                 SLIDE 4: MARKET SIZE (TAM, SAM, SOM & COMPOSITION)
+                 ======================================================= -->
+            <section class="slide" id="slide-4">
+                <div class="slide-header">
+                    <div>
+                        <div class="slide-category"><div class="indicator-box"></div> TOTAL MARKET OPPORTUNITY &amp; SEGMENTATION</div>
+                        <h1 class="slide-title">Market Size: A ₹3,000-Crore Statutory Transaction Layer</h1>
+                        <p class="slide-subtitle">Capturing immediate market share in high-velocity digital lending, while scaling into industrial supply chain gate compliance.</p>
+                    </div>
+                    <div class="slide-header-meta">
+                        <div class="slide-number-box">04 / 09</div>
+                        <div class="slide-confidential-tag">BOTTOM-UP SIZING MODEL</div>
+                    </div>
+                </div>
+
+                <div class="slide-body">
+                    <div style="flex: 1.3; display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; min-height: 0;">
+                        
+                        <!-- Left: TAM / SAM / SOM Derivation -->
+                        <div class="frame-box" style="justify-content: space-between;">
+                            <div class="frame-header">
+                                <span>EXHIBIT 4A: TAM / SAM / SOM DERIVATION (CONSERVATIVE BOTTOM-UP MODEL)</span>
+                                <span class="tag-status active">ANNUAL REVENUE POTENTIAL</span>
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; gap: 12px; flex: 1; justify-content: space-around;">
+                                <!-- TAM -->
+                                <div style="background: var(--surface-subtle); border-left: 5px solid var(--text-muted); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div style="font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; color: var(--text-muted);">TOTAL ADDRESSABLE MARKET (TAM)</div>
+                                        <div style="font-size: 16px; font-weight: 800; color: var(--text-primary); margin-top: 2px;">Global Identity Verification &amp; India Digital KYC Market</div>
+                                        <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">1.2B+ verifications annually across Indian financial services, telecom, &amp; enterprise logistics</div>
+                                    </div>
+                                    <div style="text-align: right; margin-left: 20px;">
+                                        <div style="font-family: var(--font-display); font-size: 34px; font-weight: 800; color: var(--text-primary);">₹3,000 Cr</div>
+                                        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">GLOBAL: $18.6 BILLION</div>
+                                    </div>
+                                </div>
+
+                                <!-- SAM -->
+                                <div style="background: var(--accent-blue-subtle); border-left: 5px solid var(--accent-blue); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div style="font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; color: var(--accent-blue);">SERVICEABLE ADDRESSABLE MARKET (SAM)</div>
+                                        <div style="font-size: 16px; font-weight: 800; color: var(--text-primary); margin-top: 2px;">Digital Lending, Modern NBFCs, Gig Economy &amp; Gate Logistics</div>
+                                        <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">300 Million high-velocity verifications annually demanding instant, low-cost compliance</div>
+                                    </div>
+                                    <div style="text-align: right; margin-left: 20px;">
+                                        <div style="font-family: var(--font-display); font-size: 36px; font-weight: 800; color: var(--accent-blue);">₹900 Cr</div>
+                                        <div style="font-family: var(--font-mono); font-size: 11px; color: #1E40AF; font-weight: 700;">300M CHECKS @ ₹30 AVG</div>
+                                    </div>
+                                </div>
+
+                                <!-- SOM -->
+                                <div style="background: var(--accent-green-subtle); border-left: 5px solid var(--accent-green); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div style="font-family: var(--font-mono); font-size: 11.5px; font-weight: 800; color: var(--accent-green);">SERVICEABLE OBTAINABLE MARKET (SOM - 18 MONTHS)</div>
+                                        <div style="font-size: 16px; font-weight: 800; color: var(--text-primary); margin-top: 2px;">10 Paying Enterprises (Fintech Credit Apps + Industrial Pilots)</div>
+                                        <div style="font-size: 13px; color: #065F46; margin-top: 2px;">Capturing just 0.2% of national KYC volume at ₹3.00 API price (2.4M checks)</div>
+                                    </div>
+                                    <div style="text-align: right; margin-left: 20px;">
+                                        <div style="font-family: var(--font-display); font-size: 40px; font-weight: 800; color: var(--accent-green);">₹1.0 Cr ARR</div>
+                                        <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 800; color: #065F46;">INITIAL CASH FLOW ENGINE</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right: Segment Demand Donut Chart & Breakdown Table -->
+                        <div class="frame-box" style="justify-content: space-between;">
+                            <div class="frame-header">
+                                <span>EXHIBIT 4B: TARGET MARKET SEGMENT VOLUME COMPOSITION</span>
+                                <span class="tag-status neutral">VOLUME DISTRIBUTION</span>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 170px 1fr; gap: 20px; align-items: center; flex: 1;">
+                                <!-- SVG Donut Chart -->
+                                <div style="width: 170px; height: 170px;">
+                                    <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+                                        <circle cx="50" cy="50" r="38" fill="transparent" stroke="#E2E8F0" stroke-width="16" />
+                                        
+                                        <!-- Segment 1: Digital Lending (45%) -->
+                                        <circle cx="50" cy="50" r="38" fill="transparent" stroke="#1D4ED8" stroke-width="16"
+                                                stroke-dasharray="107.4 131.3" stroke-dashoffset="0" transform="rotate(-90 50 50)" />
+                                        
+                                        <!-- Segment 2: Gig Economy (30%) -->
+                                        <circle cx="50" cy="50" r="38" fill="transparent" stroke="#8B5CF6" stroke-width="16"
+                                                stroke-dasharray="71.6 167.1" stroke-dashoffset="-107.4" transform="rotate(-90 50 50)" />
+                                        
+                                        <!-- Segment 3: Industrial Gates (25%) -->
+                                        <circle cx="50" cy="50" r="38" fill="transparent" stroke="#047857" stroke-width="16"
+                                                stroke-dasharray="59.7 179.0" stroke-dashoffset="-179.0" transform="rotate(-90 50 50)" />
+                                        
+                                        <text x="50" y="49" font-family="Plus Jakarta Sans" font-size="14" font-weight="800" fill="#0F172A" text-anchor="middle">300M</text>
+                                        <text x="50" y="62" font-family="JetBrains Mono" font-size="8.5" font-weight="700" fill="#64748B" text-anchor="middle">CHECKS/YR</text>
+                                    </svg>
+                                </div>
+
+                                <!-- Segment Legend & Growth -->
+                                <div style="display: flex; flex-direction: column; gap: 12px; font-size: 14px;">
+                                    <div style="border-left: 3px solid #1D4ED8; padding-left: 10px;">
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <strong>Digital Lending NBFCs</strong>
+                                            <span class="mono" style="font-weight: 800; color: var(--accent-blue);">45% (135M)</span>
+                                        </div>
+                                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">CAC reduction &amp; instant 0.4s loan checkout</div>
+                                    </div>
+                                    <div style="border-left: 3px solid #8B5CF6; padding-left: 10px;">
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <strong>Gig Worker Onboarding</strong>
+                                            <span class="mono" style="font-weight: 800; color: #7C3AED;">30% (90M)</span>
+                                        </div>
+                                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Quick commerce &amp; cab driver verification</div>
+                                    </div>
+                                    <div style="border-left: 3px solid #047857; padding-left: 10px;">
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <strong>Industrial Gate Logistics</strong>
+                                            <span class="mono" style="font-weight: 800; color: var(--accent-green);">25% (75M)</span>
+                                        </div>
+                                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Factory plant gate &amp; truck driver weighbridge</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--surface-subtle); padding: 12px 14px; border: 1px solid var(--border-hairline); font-size: 13px; color: var(--text-secondary); line-height: 1.45; margin-top: 10px;">
+                                <strong>Expansion Tailwinds:</strong> Small-ticket credit growing at <strong>32% CAGR</strong>. Quick-commerce adding 500k monthly delivery riders. Manufacturing logistics automating 100% of factory gate access.
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Lower Grounding Rail: 3 Structural Demand Accelerators -->
+                    <div class="frame-box" style="flex: 1.25; padding: 16px 22px; justify-content: space-between;">
+                        <div class="frame-header" style="margin-bottom: 8px; padding-bottom: 6px;">
+                            <span>EXHIBIT 4C: THREE STRUCTURAL DEMAND ACCELERATORS</span>
+                            <span class="tag-status safe">MACRO TAILWINDS</span>
+                        </div>
+                        <div style="flex: 1; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; min-height: 0;">
+                            <!-- Accelerator 1 -->
+                            <div style="background: var(--surface-subtle); border-left: 5px solid var(--accent-blue); padding: 12px 16px; display: flex; flex-direction: column; justify-content: space-between;">
+                                <div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="font-family: var(--font-mono); font-size: 10.5px; font-weight: 800; color: var(--accent-blue);">STATUTORY CATALYST</span>
+                                        <span class="tag-status active" style="font-size: 9.5px; padding: 2px 5px;">DPDP ACT 2023</span>
+                                    </div>
+                                    <div style="font-weight: 800; font-size: 16px; color: var(--text-primary); margin: 3px 0 6px 0;">1. DPDP Compliance Cliff</div>
+                                    
+                                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                                        <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.35;">
+                                            <strong>Statutory Mandate:</strong> Section 6(1) legally enforces Data Minimization; collecting excess documents is now a legal offense.
+                                        </div>
+                                        <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.35;">
+                                            <strong>Board Penalty Risk:</strong> Section 33 establishes up to ₹250-Crore fines for breaches, with personal director liability.
+                                        </div>
+                                        <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.35;">
+                                            <strong>Zero-ID Resolution:</strong> Mathematical non-possession guarantees permanent immunity from document breach penalties.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-hairline); padding-top: 6px; margin-top: 6px;">
+                                    <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 800; color: var(--accent-blue);">BOARD MANDATE:</span>
+                                    <span class="tag-status safe" style="font-size: 10.5px;">100% AUDIT IMMUNITY</span>
+                                </div>
+                            </div>
+
+                            <!-- Accelerator 2 -->
+                            <div style="background: var(--surface-subtle); border-left: 5px solid #8B5CF6; padding: 12px 16px; display: flex; flex-direction: column; justify-content: space-between;">
+                                <div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="font-family: var(--font-mono); font-size: 10.5px; font-weight: 800; color: #7C3AED;">UNIT ECONOMICS EXPLOSION</span>
+                                        <span class="tag-status neutral" style="font-size: 9.5px; padding: 2px 5px; color: #7C3AED;">32% CAGR</span>
+                                    </div>
+                                    <div style="font-weight: 800; font-size: 16px; color: var(--text-primary); margin: 3px 0 6px 0;">2. Small-Ticket Micro-Credit</div>
+                                    
+                                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                                        <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.35;">
+                                            <strong>Surging Demand:</strong> Sachet loans (₹1,000–₹5,000) are exploding across Tier-2 and Tier-3 digital borrowers.
+                                        </div>
+                                        <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.35;">
+                                            <strong>The Incumbent Trap:</strong> Legacy Video KYC charges ₹25–₹35 per check, destroying over 50% of loan gross margin.
+                                        </div>
+                                        <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.35;">
+                                            <strong>Zero-ID Economics:</strong> ₹3.00 flat API fee slashes verification overhead by 90%, recovering ₹22–₹32 EBITDA per user.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-hairline); padding-top: 6px; margin-top: 6px;">
+                                    <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 800; color: #7C3AED;">MARGIN IMPACT:</span>
+                                    <span class="tag-status safe" style="font-size: 10.5px; background: #F5F3FF; color: #7C3AED; border-color: #DDD6FE;">90% SAVINGS PER CHECK</span>
+                                </div>
+                            </div>
+
+                            <!-- Accelerator 3 -->
+                            <div style="background: var(--surface-subtle); border-left: 5px solid var(--accent-green); padding: 12px 16px; display: flex; flex-direction: column; justify-content: space-between;">
+                                <div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="font-family: var(--font-mono); font-size: 10.5px; font-weight: 800; color: var(--accent-green);">GIG FLEETS &amp; HOSPITALITY</span>
+                                        <span class="tag-status safe" style="font-size: 9.5px; padding: 2px 5px;">BLINKIT &amp; SARAIS ACT</span>
+                                    </div>
+                                    <div style="font-weight: 800; font-size: 16px; color: var(--text-primary); margin: 3px 0 6px 0;">3. Quick-Commerce &amp; Visitor Registers</div>
+                                    
+                                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                                        <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.35;">
+                                            <strong>Fleet Proxy Crisis:</strong> Delivery networks face massive account-renting fraud; riders sub-lease accounts to unverified proxies.
+                                        </div>
+                                        <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.35;">
+                                            <strong>Hospitality Liability:</strong> Hotels face ₹250 Cr DPDP breach fines for Aadhaar photocopies, yet must log guests for police.
+                                        </div>
+                                        <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.35;">
+                                            <strong>Zero-ID Deployment:</strong> Silicon Enclave passkey prevents account sharing; IT Act Sec 4 &amp; 5 receipt provides court-admissible audit proof.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-hairline); padding-top: 6px; margin-top: 6px;">
+                                    <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 800; color: var(--accent-green);">OPERATIONAL GAIN:</span>
+                                    <span class="tag-status safe" style="font-size: 10.5px;">100% ANTI-RENTING &amp; 0 PII</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <div class="slide-footer-sources">
+                        <span><strong>Data References:</strong> UIDAI Authentication Statistics 2025; PwC India Fintech Due Diligence Report; Logistics Management Association</span>
+                    </div>
+                    <div>PAGE 04 • MARKET SIZING MODEL</div>
+                </div>
+            </section>
+
+
+            <!-- =======================================================
+                 SLIDE 5: PRODUCT TECH (PATENTS & STATUTORY PROOF)
+                 ======================================================= -->
+            <section class="slide" id="slide-5">
+                <div class="slide-header">
+                    <div>
+                        <div class="slide-category success"><div class="indicator-box"></div> INTELLECTUAL PROPERTY &amp; REGULATORY RIGOR</div>
+                        <h1 class="slide-title">Patented Technology Architecture &amp; Exact Statutory Compliance</h1>
+                        <p class="slide-subtitle">A defensible patent-pending IP portfolio operating directly on officially gazetted regulatory rails of the RBI, SEBI, and Parliament.</p>
+                    </div>
+                    <div class="slide-header-meta">
+                        <div class="slide-number-box">05 / 09</div>
+                        <div class="slide-confidential-tag">PATENT &amp; STATUTORY AUDIT</div>
+                    </div>
+                </div>
+
+                <div class="slide-body">
+                    <div style="flex: 1.5; display: grid; grid-template-columns: 1fr 1.35fr; gap: 20px; min-height: 0;">
+                        
+                        <!-- Left: Patent Portfolio Dossier -->
+                        <div class="frame-box" style="justify-content: space-between;">
+                            <div class="frame-header">
+                                <span>EXHIBIT 5A: PROVISIONAL PATENT APPLICATION CLAIMS STRUCTURE</span>
+                                <span class="tag-status safe">PATENT-PENDING IP</span>
+                            </div>
+
+                            <div style="background: var(--surface-subtle); padding: 14px 18px; border: 1px solid var(--border-hairline); margin-bottom: 10px;">
+                                <div style="font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; color: var(--accent-blue);">INDIAN &amp; PCT APPLN. NO: IP/IN/2026/09148</div>
+                                <div style="font-size: 15px; font-weight: 800; color: var(--text-primary); margin-top: 4px; line-height: 1.35;">
+                                    "System and Method for Client-Side Cryptographic Identity Attestation via Hardware Enclaves and Zero-Knowledge Circuits"
+                                </div>
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; gap: 12px; flex: 1; justify-content: space-around;">
+                                <div style="border-left: 4px solid var(--accent-blue); padding-left: 12px;">
+                                    <div style="font-size: 14.5px; font-weight: 800; color: var(--text-primary);">Claim 1: Hardware-Anchored Poseidon Nullifiers</div>
+                                    <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px; line-height: 1.4;">Method for generating deterministic nullifier hashes bound to physical FIDO2 chip keys without exposing national identity numbers to verifiers.</div>
+                                </div>
+                                <div style="border-left: 4px solid #8B5CF6; padding-left: 12px;">
+                                    <div style="font-size: 14.5px; font-weight: 800; color: var(--text-primary);">Claim 2: Sub-450ms Budget WASM Circuits</div>
+                                    <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px; line-height: 1.4;">Optimized WebAssembly compilation enabling Zero-Knowledge proving on sub-₹8,000 Android devices without expensive cloud GPU assist.</div>
+                                </div>
+                                <div style="border-left: 4px solid var(--accent-green); padding-left: 12px;">
+                                    <div style="font-size: 14.5px; font-weight: 800; color: var(--text-primary);">Claim 3: Sub-4-Second On-Chain State Revocation</div>
+                                    <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px; line-height: 1.4;">Decentralized state-anchor kill-switch protocol anchored on Algorand ledger costing &lt; 8 paise per verification check.</div>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--surface-subtle); padding: 10px 14px; border: 1px solid var(--border-hairline); font-size: 12.5px; color: var(--text-secondary); margin-top: 10px;">
+                                <strong>Defensive IP Barrier:</strong> 24-month reverse-engineering barrier. Incumbents cannot replicate client-side ZK without infringing hardware-enclave patent claims.
+                            </div>
+                        </div>
+
+                        <!-- Right: Statutory Compliance Grid -->
+                        <div class="frame-box" style="justify-content: space-between;">
+                            <div class="frame-header">
+                                <span>EXHIBIT 5B: STATUTORY CITATION &amp; LEGAL ADMISSIBILITY AUDIT</span>
+                                <span class="tag-status safe">100% REGULATORY AUDIT SAFE</span>
+                            </div>
+
+                            <table class="inst-table" style="flex: 1; height: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 26%;">Statutory Authority</th>
+                                        <th style="width: 22%;">Specific Section</th>
+                                        <th style="width: 52%;">Legal Due Diligence Recognition</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>RBI KYC Master Direction</strong></td>
+                                        <td class="mono" style="color: var(--accent-blue); font-weight: 700;">Section 16</td>
+                                        <td>Validates Offline Verification of Aadhaar XML as full equivalent to physical OVD verification.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>RBI KYC Master Direction</strong></td>
+                                        <td class="mono" style="color: var(--accent-blue); font-weight: 700;">Section 18</td>
+                                        <td>Confirms Digital KYC process equivalency; eliminates requirement to retain unredacted identity scans.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Prevention of Money Laundering (PMLA)</strong></td>
+                                        <td class="mono" style="color: #7C3AED; font-weight: 700;">Rule 9(16)</td>
+                                        <td>Authorizes electronic Customer Due Diligence (e-CDD) records without demanding centralized document retention.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>DPDP Act 2023</strong></td>
+                                        <td class="mono" style="color: var(--accent-crimson); font-weight: 700;">Section 6(1)</td>
+                                        <td>Statutory mandate for <strong>Data Minimization</strong>. Verifying without storing documents guarantees compliance.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>DPDP Act 2023</strong></td>
+                                        <td class="mono" style="color: var(--accent-crimson); font-weight: 700;">Section 33</td>
+                                        <td>Imposes penalties up to ₹250 Crores for breaches. 0-byte architecture provides <strong>100% mathematical immunity</strong>.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Supreme Court of India</strong></td>
+                                        <td class="mono">Puttaswamy (2018)</td>
+                                        <td>Bars private firms from storing 12-digit Aadhaar numbers. ZERO-ID stores 0 bytes.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Information Tech Act 2000</strong></td>
+                                        <td class="mono">Sections 4 &amp; 5</td>
+                                        <td>Cryptographically signed electronic registers are 100% court-admissible legal evidence.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div style="background: var(--surface-subtle); padding: 8px 14px; border: 1px solid var(--border-hairline); font-size: 12px; color: var(--text-muted); margin-top: 6px;">
+                                * All protocol operations independently audited by top regulatory &amp; cyber legal counsel for Tier-1 BFSI deployment.
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Bottom: Formal Legal Opinion Summary -->
+                    <div class="frame-box" style="padding: 14px 22px; background: var(--surface-contrast); color: #FFFFFF; border: none; flex-shrink: 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <span style="font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; color: #38BDF8; letter-spacing: 0.08em; text-transform: uppercase;">FORMAL LEGAL COUNSEL AUDIT OPINION</span>
+                            <span class="tag-status safe" style="background: rgba(4, 120, 87, 0.3); border-color: #047857; color: #34D399;">100% REGULATORY SAFE-HARBOR</span>
+                        </div>
+                        <p style="font-size: 14px; color: #CBD5E1; line-height: 1.45;">
+                            ZERO-ID operates fully within existing Indian law. Under <strong>RBI Master Direction Section 16 &amp; 18</strong> and <strong>PMLA Rule 9(16)</strong>, validating digitally signed official XML satisfies all legal Customer Due Diligence (CDD) and In-Person Verification (IPV) equivalency mandates, while permanently eliminating <strong>DPDP Act Section 33</strong> breach penalties through mathematical non-possession.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <div class="slide-footer-sources">
+                        <span><strong>Statutory Gazettes:</strong> RBI Notification DOR.AML.BC.No.27/14.01.001/2019-20; Ministry of Law &amp; Justice Act No. 22 of 2023</span>
+                    </div>
+                    <div>PAGE 05 • LEGAL &amp; IP AUDIT</div>
+                </div>
+            </section>
+
+
+            <!-- =======================================================
+                 SLIDE 6: BUSINESS MODEL & UNIT ECONOMICS
+                 ======================================================= -->
+            <section class="slide" id="slide-6">
+                <div class="slide-header">
+                    <div>
+                        <div class="slide-category success"><div class="indicator-box"></div> FINANCIAL MODEL &amp; UNIT ECONOMICS</div>
+                        <h1 class="slide-title">Software Margins at Transaction Scale: 96.7% Gross Margin</h1>
+                        <p class="slide-subtitle">Because cryptographic computation executes on the user's phone, our Cost of Goods Sold is virtually flat as transaction volume scales.</p>
+                    </div>
+                    <div class="slide-header-meta">
+                        <div class="slide-number-box">06 / 09</div>
+                        <div class="slide-confidential-tag">AUDITED FINANCIAL MODEL</div>
+                    </div>
+                </div>
+
+                <div class="slide-body">
+                    <div style="flex: 1; display: grid; grid-template-columns: 1fr 1.35fr; gap: 20px; min-height: 0;">
+                        
+                        <!-- Left: Per-Transaction Unit Economics Breakdown -->
+                        <div class="frame-box" style="justify-content: space-between; padding: 18px 22px;">
+                            <div class="frame-header">
+                                <span>EXHIBIT 6A: PER-TRANSACTION UNIT ECONOMICS &amp; COGS DILIGENCE</span>
+                                <span class="tag-status safe">AUDITED UNIT MODEL</span>
+                            </div>
+
+                            <!-- Big Comparison Top Cards -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 12px;">
+                                <div style="background: var(--surface-subtle); border: 1px solid var(--border-hairline); border-left: 4px solid var(--accent-crimson); padding: 14px;">
+                                    <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--accent-crimson);">LEGACY INCUMBENT PRICE</div>
+                                    <div style="font-family: var(--font-display); font-size: 32px; font-weight: 800; color: var(--text-primary); margin-top: 2px;">₹25 – ₹35</div>
+                                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">High cloud GPU &amp; BPO call-center cost</div>
+                                </div>
+                                <div style="background: var(--accent-green-subtle); border: 1px solid var(--accent-green-border); border-left: 4px solid var(--accent-green); padding: 14px;">
+                                    <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 800; color: var(--accent-green);">ZERO-ID BLIND VERIFY PRICE</div>
+                                    <div style="font-family: var(--font-display); font-size: 32px; font-weight: 800; color: var(--accent-green); margin-top: 2px;">₹3.00 Flat</div>
+                                    <div style="font-size: 12px; color: #065F46; margin-top: 2px;">88% lower enterprise cost; 96.7% GM</div>
+                                </div>
+                            </div>
+
+                            <!-- Itemized COGS Table -->
+                            <table class="inst-table" style="margin-bottom: 10px;">
+                                <thead>
+                                    <tr>
+                                        <th>COGS Component</th>
+                                        <th>Cost Driver</th>
+                                        <th style="text-align: right;">Cost / Check</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Client WASM Execution</strong></td>
+                                        <td>Prover runs on client device</td>
+                                        <td class="mono" style="text-align: right; color: var(--accent-green); font-weight: 700;">₹0.000</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Serverless Ephemeral Gateway</strong></td>
+                                        <td>AWS Fargate RAM proof check (40ms)</td>
+                                        <td class="mono" style="text-align: right;">₹0.017</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Algorand State Anchor</strong></td>
+                                        <td>On-chain revocation check</td>
+                                        <td class="mono" style="text-align: right;">₹0.083</td>
+                                    </tr>
+                                    <tr style="background: var(--surface-subtle); font-weight: 800;">
+                                        <td style="color: var(--text-primary);">Total Blended COGS</td>
+                                        <td style="color: var(--text-muted);">Fully loaded direct cost</td>
+                                        <td class="mono" style="text-align: right; color: var(--text-primary); font-size: 16px;">₹0.100</td>
+                                    </tr>
+                                    <tr class="highlight">
+                                        <td style="font-weight: 800;">Net Contribution Margin</td>
+                                        <td>Per verification check</td>
+                                        <td class="mono" style="text-align: right; font-weight: 800; font-size: 16px; color: var(--accent-blue);">₹2.90 (96.7%)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div style="background: var(--surface-subtle); padding: 12px 14px; border: 1px solid var(--border-hairline); font-size: 12.5px; color: var(--text-secondary); line-height: 1.45;">
+                                <strong>The Unfair Cost Advantage:</strong> Legacy SaaS burns millions on continuous AWS GPU clusters to run heavy computer vision OCR models. ZERO-ID distributes 100% of mathematical computation to customer smartphones.
+                            </div>
+                        </div>
+
+                        <!-- Right: 3-Year Proforma P&L Projections Table -->
+                        <div class="frame-box" style="justify-content: space-between; padding: 18px 22px;">
+                            <div class="frame-header">
+                                <span>EXHIBIT 6B: 3-YEAR PROFORMA FINANCIAL PROJECTIONS (HIGH-MARGIN CASH ENGINE)</span>
+                                <span class="tag-status safe">PROFORMA AUDIT</span>
+                            </div>
+
+                            <table class="inst-table" style="flex: 1; height: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 37%;">Operating Financial Metric</th>
+                                        <th style="width: 21%;">Year 1 (FY27)</th>
+                                        <th style="width: 21%;">Year 2 (FY28)</th>
+                                        <th style="width: 21%; background: var(--accent-green-subtle); color: var(--accent-green);">Year 3 (FY29)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Total Paid Verifications</td>
+                                        <td class="mono">2.4 Million</td>
+                                        <td class="mono">12.0 Million</td>
+                                        <td class="mono" style="font-weight: 800; color: var(--accent-blue);">48.0 Million</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Blended Average Realization / Check</td>
+                                        <td class="mono">₹3.00</td>
+                                        <td class="mono">₹3.00</td>
+                                        <td class="mono">₹3.00</td>
+                                    </tr>
+                                    <tr class="highlight">
+                                        <td><strong>Gross Revenue (ARR)</strong></td>
+                                        <td class="mono" style="font-weight: 800;">₹72.0 Lakhs</td>
+                                        <td class="mono" style="font-weight: 800;">₹3.60 Crores</td>
+                                        <td class="mono" style="font-family: var(--font-display); font-size: 18px; font-weight: 800; color: var(--accent-blue);">₹14.40 Crores</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Direct Transaction COGS (₹0.10)</td>
+                                        <td class="mono" style="color: var(--accent-crimson);">₹2.4 Lakhs</td>
+                                        <td class="mono" style="color: var(--accent-crimson);">₹12.0 Lakhs</td>
+                                        <td class="mono" style="color: var(--accent-crimson);">₹48.0 Lakhs</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Gross Profit (96.7%)</strong></td>
+                                        <td class="mono" style="color: var(--accent-green); font-weight: 700;">₹69.6 Lakhs</td>
+                                        <td class="mono" style="color: var(--accent-green); font-weight: 700;">₹3.48 Crores</td>
+                                        <td class="mono" style="font-weight: 800; color: var(--accent-green);">₹13.92 Crores</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Operating OPEX (Salaries/Infra)</td>
+                                        <td class="mono">₹48.0 Lakhs</td>
+                                        <td class="mono">₹1.10 Crores</td>
+                                        <td class="mono">₹2.20 Crores</td>
+                                    </tr>
+                                    <tr style="background: var(--accent-green-subtle); border-top: 2px solid var(--accent-green-border);">
+                                        <td style="font-weight: 800; color: var(--accent-green);">Operating EBITDA</td>
+                                        <td class="mono" style="font-weight: 800; color: var(--accent-green);">+₹21.6 Lakhs</td>
+                                        <td class="mono" style="font-weight: 800; color: var(--accent-green);">+₹2.38 Crores</td>
+                                        <td class="mono" style="font-family: var(--font-display); font-size: 18px; font-weight: 800; color: var(--accent-green);">+₹11.72 Crores</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: var(--text-muted); font-size: 13.5px;">EBITDA Margin %</td>
+                                        <td class="mono" style="color: var(--text-muted); font-size: 13.5px;">30.0%</td>
+                                        <td class="mono" style="color: var(--text-muted); font-size: 13.5px;">66.1%</td>
+                                        <td class="mono" style="color: var(--accent-green); font-size: 13.5px; font-weight: 800;">81.4%</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: var(--text-muted); font-size: 13.5px;">India Market Share</td>
+                                        <td class="mono" style="color: var(--text-muted); font-size: 13.5px;">0.2%</td>
+                                        <td class="mono" style="color: var(--text-muted); font-size: 13.5px;">1.0%</td>
+                                        <td class="mono" style="color: var(--text-muted); font-size: 13.5px;">4.0%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">
+                                * Assumes 48M checks in Year 3 out of 1.2B total checks in India (4% market penetration). Completely self-sustaining cash flow from Year 1.
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <div class="slide-footer-sources">
+                        <span><strong>Financial Model Basis:</strong> AWS Fargate Serverless Compute Pricing; Algorand Foundation Transaction Fee Schedule; Pre-Seed Run-rate</span>
+                    </div>
+                    <div>PAGE 06 • UNIT ECONOMICS &amp; FINANCIAL AUDIT</div>
+                </div>
+            </section>
+
+
+            <!-- =======================================================
+                 SLIDE 7: GO-TO-MARKET ROADMAP (TWO-SPEED ENGINE)
+                 ======================================================= -->
+            <section class="slide" id="slide-7">
+                <div class="slide-header">
+                    <div>
+                        <div class="slide-category"><div class="indicator-box"></div> COMMERCIAL EXECUTION STRATEGY</div>
+                        <h1 class="slide-title">Two-Speed GTM: Rapid Fintech Cash Flow to Industrial Scale</h1>
+                        <p class="slide-subtitle">Capturing immediate 4-week sales cycles in digital lending, while scaling into industrial supply chain gate access and contract labor.</p>
+                    </div>
+                    <div class="slide-header-meta">
+                        <div class="slide-number-box">07 / 09</div>
+                        <div class="slide-confidential-tag">ENTERPRISE SALES PLAYBOOK</div>
+                    </div>
+                </div>
+
+                <div class="slide-body">
+                    <!-- Top: Two Speed Columns (Rich Full-Height Playbooks) -->
+                    <div style="flex: 1.4; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; min-height: 0;">
+                        
+                        <!-- Speed 1: Fintech Sprint -->
+                        <div class="frame-box" style="border-top: 5px solid var(--accent-blue); justify-content: space-between; padding: 18px 22px;">
+                            <div>
+                                <div class="frame-header" style="color: var(--accent-blue); margin-bottom: 8px;">
+                                    <span>SPEED 1: FAST-TRACK DIGITAL LENDING &amp; NBFCS</span>
+                                    <span class="mono" style="font-weight: 800;">MONTHS 1–12</span>
+                                </div>
+
+                                <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.45;">
+                                    <strong>Target Segment:</strong> High-growth digital micro-lending apps (e.g., KreditBee, Navi, Slice, mPokket, Cashe) processing 50k–200k monthly verifications with severe CAC sensitivity.
+                                </div>
+
+                                <div style="background: var(--surface-subtle); padding: 14px 16px; border: 1px solid var(--border-hairline); margin-bottom: 12px;">
+                                    <div style="font-family: var(--font-mono); font-size: 12px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">4 ENTERPRISE VALUE DRIVERS:</div>
+                                    <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13.5px; color: var(--text-secondary); line-height: 1.45;">
+                                        <div>▸ <strong>2-Line React SDK:</strong> Drop-in frontend integration into existing checkout funnels in an afternoon without backend database migrations.</div>
+                                        <div>▸ <strong>Instant Margin Boost:</strong> Saves ₹17–₹22 Lakhs on every 100,000 onboardings directly into company operating EBITDA.</div>
+                                        <div>▸ <strong>42% Funnel Drop-off Rescue:</strong> Instant 0.4s biometric tap replaces camera OCR scans and form errors, rescuing paid acquisition spend.</div>
+                                        <div>▸ <strong>Free Challenger Tier:</strong> First 1,000 verifications free; tested in staging sprints against incumbent providers.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Commercial Economics Grid -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; border-top: 1px solid var(--border-hairline); padding-top: 12px;">
+                                <div style="background: #F8FAFC; border: 1px solid var(--border-hairline); padding: 10px 12px;">
+                                    <div style="font-family: var(--font-mono); font-size: 10.5px; color: var(--text-muted); font-weight: 700;">SALES CYCLE</div>
+                                    <div style="font-size: 16px; font-weight: 800; color: var(--text-primary); margin-top: 2px;">4–6 Weeks</div>
+                                </div>
+                                <div style="background: var(--accent-blue-subtle); border: 1px solid var(--accent-blue-border); padding: 10px 12px;">
+                                    <div style="font-family: var(--font-mono); font-size: 10.5px; color: var(--accent-blue); font-weight: 700;">AVERAGE ACV</div>
+                                    <div style="font-size: 16px; font-weight: 800; color: var(--accent-blue); margin-top: 2px;">₹18 Lakhs / yr</div>
+                                </div>
+                                <div style="background: #F8FAFC; border: 1px solid var(--border-hairline); padding: 10px 12px;">
+                                    <div style="font-family: var(--font-mono); font-size: 10.5px; color: var(--text-muted); font-weight: 700;">CAC PAYBACK</div>
+                                    <div style="font-size: 16px; font-weight: 800; color: var(--text-primary); margin-top: 2px;">&lt; 45 Days</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Speed 2: Quick-Commerce Fleets & Statutory Hospitality Registers -->
+                        <div class="frame-box" style="border-top: 5px solid #8B5CF6; justify-content: space-between; padding: 18px 22px;">
+                            <div>
+                                <div class="frame-header" style="color: #7C3AED; margin-bottom: 8px;">
+                                    <span>SPEED 2: GIG QUICK-COMMERCE &amp; STATUTORY HOSPITALITY REGISTERS</span>
+                                    <span class="mono" style="font-weight: 800;">MONTHS 12–18</span>
+                                </div>
+
+                                <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.45;">
+                                    <strong>Target Segment:</strong> Hyperlocal quick-commerce delivery fleets (Blinkit, Zepto, Swiggy) and hospitality hotel chains with daily visitor &amp; driver compliance obligations.
+                                </div>
+
+                                <div style="background: #F5F3FF; padding: 14px 16px; border: 1px solid #DDD6FE; margin-bottom: 12px;">
+                                    <div style="font-family: var(--font-mono); font-size: 12px; font-weight: 800; color: #6D28D9; margin-bottom: 8px;">4 OPERATIONAL &amp; STATUTORY LEVERS:</div>
+                                    <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13.5px; color: var(--text-secondary); line-height: 1.45;">
+                                        <div>▸ <strong>Anti-Account Renting Enforcement:</strong> Silicon Enclave passkey stops riders from sub-leasing verified delivery accounts to illegal proxies.</div>
+                                        <div>▸ <strong>Sarais Act 1867 &amp; Police Registers:</strong> Generates court-admissible electronic visitor dossiers without photocopying or hoarding citizen Aadhaar.</div>
+                                        <div>▸ <strong>Zero DPDP Exposure (₹250 Cr Shield):</strong> 0 bytes of customer PII stored across company servers, dark stores, or front desks.</div>
+                                        <div>▸ <strong>0.38-Second Edge Verification:</strong> Pure client-side bilinear pairing runs instantly on standard low-cost Android smartphones.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Fleet & Hospitality Synergy Grid -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; border-top: 1px solid var(--border-hairline); padding-top: 12px;">
+                                <div style="background: #F5F3FF; border: 1px solid #DDD6FE; padding: 10px 12px;">
+                                    <div style="font-family: var(--font-mono); font-size: 10.5px; color: #7C3AED; font-weight: 700;">ONBOARDING SPEED</div>
+                                    <div style="font-size: 16px; font-weight: 800; color: #7C3AED; margin-top: 2px;">0.38 Sec</div>
+                                </div>
+                                <div style="background: #F8FAFC; border: 1px solid var(--border-hairline); padding: 10px 12px;">
+                                    <div style="font-family: var(--font-mono); font-size: 10.5px; color: var(--text-muted); font-weight: 700;">FRAUD REDUCTION</div>
+                                    <div style="font-size: 16px; font-weight: 800; color: var(--text-primary); margin-top: 2px;">100% Anti-Proxy</div>
+                                </div>
+                                <div style="background: #F8FAFC; border: 1px solid var(--border-hairline); padding: 10px 12px;">
+                                    <div style="font-family: var(--font-mono); font-size: 10.5px; color: var(--text-muted); font-weight: 700;">ENTERPRISE ACV</div>
+                                    <div style="font-size: 16px; font-weight: 800; color: var(--text-primary); margin-top: 2px;">₹36 Lakhs / yr</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Middle: Gantt Roadmap Strip -->
+                    <div class="frame-box" style="padding: 14px 20px; justify-content: space-between;">
+                        <div class="frame-header" style="margin-bottom: 8px; padding-bottom: 5px;">
+                            <span>EXHIBIT 7: 18-MONTH COMMERCIAL EXECUTION GANTT ROADMAP</span>
+                            <span class="mono">Q1 FY27 TO Q4 FY27</span>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+                            <div style="border-left: 4px solid var(--accent-blue); padding-left: 10px;">
+                                <div style="font-family: var(--font-mono); font-size: 11.5px; font-weight: 800; color: var(--accent-blue);">Q1: SDK HARDENING</div>
+                                <div style="font-size: 12.5px; color: var(--text-secondary); margin-top: 3px; line-height: 1.35;">Deploy developer self-serve API &amp; SOC-2 compliance preparation.</div>
+                            </div>
+                            <div style="border-left: 4px solid #8B5CF6; padding-left: 10px;">
+                                <div style="font-family: var(--font-mono); font-size: 11.5px; font-weight: 800; color: #7C3AED;">Q2: 3 PAID NBFC PILOTS</div>
+                                <div style="font-size: 12.5px; color: var(--text-secondary); margin-top: 3px; line-height: 1.35;">Convert first 3 challenger lending apps to paid production traffic.</div>
+                            </div>
+                            <div style="border-left: 4px solid var(--accent-amber); padding-left: 10px;">
+                                <div style="font-family: var(--font-mono); font-size: 11.5px; font-weight: 800; color: var(--accent-amber);">Q3: FLEET &amp; HOTEL PILOTS</div>
+                                <div style="font-size: 12.5px; color: var(--text-secondary); margin-top: 3px; line-height: 1.35;">Deploy delivery rider anti-renting pilot &amp; hotel visitor registers.</div>
+                            </div>
+                            <div style="border-left: 4px solid var(--accent-green); padding-left: 10px;">
+                                <div style="font-family: var(--font-mono); font-size: 11.5px; font-weight: 800; color: var(--accent-green);">Q4: ₹1 CRORE ARR MILESTONE</div>
+                                <div style="font-size: 12.5px; color: var(--text-secondary); margin-top: 3px; line-height: 1.35;">10 paying enterprise clients live; ready for $3M Series A.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom: Statutory Legal Register Synergy Box -->
+                    <div class="frame-box" style="padding: 14px 22px; background: #F8FAFC; border: 1px solid #E2E8F0; justify-content: space-between;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-family: var(--font-mono); font-size: 11.5px; font-weight: 800; color: #1D4ED8; text-transform: uppercase;">THE STATUTORY LEGAL REGISTER CATALYST (IT ACT 2000 SEC 4 &amp; 5)</span>
+                            <span class="tag-status active" style="font-size: 10.5px;">DAY-1 COURT-ADMISSIBLE COMPLIANCE</span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; font-size: 13px; color: var(--text-secondary); line-height: 1.45;">
+                            <div><strong>Court-Admissible Dossier:</strong> Cryptographic receipts satisfy statutory inspection demands under IT Act 2000 &amp; RBI KYC Master Directions.</div>
+                            <div><strong>Audit in 2 Milliseconds:</strong> Police and auditors verify digital signature authenticity on-chain without seizing citizen physical cards.</div>
+                            <div><strong>Zero Enterprise Liability:</strong> Guarantees 100% immunity from DPDP penalties by ensuring 0 bytes of customer PII ever touch company disk.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <div class="slide-footer-sources">
+                        <span><strong>Sales Execution Framework:</strong> Product-Led Developer Growth + Executive Strategic Enterprise Accounts</span>
+                    </div>
+                    <div>PAGE 07 • GO-TO-MARKET BLUEPRINT</div>
+                </div>
+            </section>
+
+
+            <!-- =======================================================
+                 SLIDE 8: COMPETITIVE MOAT & THE INNOVATOR'S DILEMMA
+                 ======================================================= -->
+            <section class="slide" id="slide-8">
+                <div class="slide-header">
+                    <div>
+                        <div class="slide-category danger"><div class="indicator-box"></div> COMPETITIVE DILIGENCE &amp; STRUCTURAL MOAT</div>
+                        <h1 class="slide-title">Competitive Scorecard &amp; The Innovator's Dilemma</h1>
+                        <p class="slide-subtitle">Why incumbent KYC providers are structurally prohibited from competing without cannibalizing 80% of their existing revenue.</p>
+                    </div>
+                    <div class="slide-header-meta">
+                        <div class="slide-number-box">08 / 09</div>
+                        <div class="slide-confidential-tag">COMPETITOR BENCHMARK</div>
+                    </div>
+                </div>
+
+                <div class="slide-body">
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 12px; min-height: 0;">
+                        
+                        <!-- Formal Institutional Diligence Matrix (8 Dimensions) — compact cell padding so all 8 rows fit without clipping -->
+                        <div class="frame-box" style="padding: 0; overflow: hidden; flex: 1.5; display: flex; flex-direction: column;">
+                            <table class="inst-table" style="flex: 1; height: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 25%; padding: 8px 14px; font-size: 11.5px;">Evaluation Dimension</th>
+                                        <th style="width: 21%; padding: 8px 14px; font-size: 11.5px; background: var(--accent-blue-subtle); color: var(--accent-blue); font-weight: 800;">ZERO-ID (Our Protocol)</th>
+                                        <th style="width: 20%; padding: 8px 14px; font-size: 11.5px;">Legacy SaaS (HyperVerge / IDfy)</th>
+                                        <th style="width: 17%; padding: 8px 14px; font-size: 11.5px;">DigiLocker (Gov API)</th>
+                                        <th style="width: 17%; padding: 8px 14px; font-size: 11.5px;">Paper &amp; WhatsApp Scans</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="highlight">
+                                        <td style="padding: 7px 14px; font-size: 13.5px;"><strong>Cost per Verification</strong></td>
+                                        <td class="mono" style="padding: 7px 14px; font-size: 13.5px; font-weight: 800; color: var(--accent-blue);">₹3.00 Flat</td>
+                                        <td class="mono" style="padding: 7px 14px; font-size: 13.5px;">₹20.00 – ₹35.00</td>
+                                        <td class="mono" style="padding: 7px 14px; font-size: 13.5px;">Free (Gov Public)</td>
+                                        <td class="mono" style="padding: 7px 14px; font-size: 13.5px; color: var(--accent-crimson);">High Admin Overheads</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 7px 14px; font-size: 13.5px;"><strong>Verification Latency</strong></td>
+                                        <td class="mono" style="padding: 7px 14px; font-size: 13.5px; font-weight: 800; color: var(--accent-green);">0.4 Seconds (Instant)</td>
+                                        <td class="mono" style="padding: 7px 14px; font-size: 13.5px;">8 – 12 Minutes (Video call)</td>
+                                        <td class="mono" style="padding: 7px 14px; font-size: 13.5px;">15 – 30 Seconds (OTP)</td>
+                                        <td class="mono" style="padding: 7px 14px; font-size: 13.5px; color: var(--accent-crimson);">Hours to Days</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 7px 14px; font-size: 13.5px;"><strong>PII Stored on Cloud Servers</strong></td>
+                                        <td style="padding: 7px 14px;"><span class="tag-status safe" style="font-size: 10px; padding: 2px 6px;">0 BYTES (ZERO PII)</span></td>
+                                        <td style="padding: 7px 14px;"><span class="tag-status hazard" style="font-size: 10px; padding: 2px 6px;">FULL PDFS &amp; PHOTOS</span></td>
+                                        <td style="padding: 7px 14px;"><span class="tag-status hazard" style="font-size: 10px; padding: 2px 6px;">UNREDACTED XML</span></td>
+                                        <td style="padding: 7px 14px;"><span class="tag-status hazard" style="font-size: 10px; padding: 2px 6px;">PAPER IN DRAWERS</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 7px 14px; font-size: 13.5px;"><strong>DPDP Act Penalty Exposure</strong></td>
+                                        <td style="padding: 7px 14px;"><span class="tag-status safe" style="font-size: 10px; padding: 2px 6px;">100% IMMUNE (₹0)</span></td>
+                                        <td style="padding: 7px 14px;"><span class="tag-status hazard" style="font-size: 10px; padding: 2px 6px;">UP TO ₹250 CRORES</span></td>
+                                        <td style="padding: 7px 14px;"><span class="tag-status hazard" style="font-size: 10px; padding: 2px 6px;">UP TO ₹250 CRORES</span></td>
+                                        <td style="padding: 7px 14px;"><span class="tag-status hazard" style="font-size: 10px; padding: 2px 6px;">UP TO ₹250 CRORES</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 7px 14px; font-size: 13.5px;"><strong>Customer Funnel Drop-off Rate</strong></td>
+                                        <td class="mono" style="padding: 7px 14px; font-size: 13.5px; font-weight: 800; color: var(--accent-green);">&lt; 3% Drop-off</td>
+                                        <td class="mono" style="padding: 7px 14px; font-size: 13.5px; color: var(--accent-crimson);">35% – 45% Drop-off</td>
+                                        <td class="mono" style="padding: 7px 14px; font-size: 13.5px;">25% – 30% Drop-off</td>
+                                        <td class="mono" style="padding: 7px 14px; font-size: 13.5px; color: var(--accent-crimson);">Severe Operational Friction</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 7px 14px; font-size: 13.5px;"><strong>Hardware Biometric Anchor</strong></td>
+                                        <td style="padding: 7px 14px;"><span class="tag-status safe" style="font-size: 10px; padding: 2px 6px;">YES (FIDO2 ENCLAVE)</span></td>
+                                        <td style="padding: 7px 14px;"><span class="tag-status neutral" style="font-size: 10px; padding: 2px 6px;">NO (Cloud Vision)</span></td>
+                                        <td style="padding: 7px 14px;"><span class="tag-status neutral" style="font-size: 10px; padding: 2px 6px;">NO (SMS OTP Only)</span></td>
+                                        <td style="padding: 7px 14px;"><span class="tag-status neutral" style="font-size: 10px; padding: 2px 6px;">NO</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 7px 14px; font-size: 13.5px;"><strong>Mule Account Immunity</strong></td>
+                                        <td style="padding: 7px 14px;"><span class="tag-status safe" style="font-size: 10px; padding: 2px 6px;">100% IMMUNE</span></td>
+                                        <td style="padding: 7px 14px;"><span class="tag-status hazard" style="font-size: 10px; padding: 2px 6px;">VULNERABLE (DEEPFAKES)</span></td>
+                                        <td style="padding: 7px 14px;"><span class="tag-status hazard" style="font-size: 10px; padding: 2px 6px;">VULNERABLE (SIM SWAPS)</span></td>
+                                        <td style="padding: 7px 14px;"><span class="tag-status hazard" style="font-size: 10px; padding: 2px 6px;">0% DEFENSE</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 7px 14px; font-size: 13.5px;"><strong>In-Person Verification (IPV)</strong></td>
+                                        <td style="padding: 7px 14px;"><span class="tag-status safe" style="font-size: 10px; padding: 2px 6px;">RBI SEC 18 EQUIVALENT</span></td>
+                                        <td style="padding: 7px 14px;"><span class="tag-status neutral" style="font-size: 10px; padding: 2px 6px;">MANUAL V-CIP CALLS</span></td>
+                                        <td style="padding: 7px 14px;"><span class="tag-status hazard" style="font-size: 10px; padding: 2px 6px;">NO IPV PROOF</span></td>
+                                        <td style="padding: 7px 14px;"><span class="tag-status hazard" style="font-size: 10px; padding: 2px 6px;">PHYSICAL ONLY</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- The Innovator's Dilemma 2-Column Deep Analysis Box -->
+                        <div class="frame-box" style="background: var(--surface-subtle); border-left: 5px solid var(--accent-blue); padding: 14px 20px; flex: 1.1; justify-content: space-between;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                <div style="font-family: var(--font-mono); font-size: 12px; font-weight: 800; color: var(--accent-blue);">
+                                    THE INNOVATOR'S DILEMMA: WHY THE INCUMBENTS ARE COMMERCIALLY PARALYZED
+                                </div>
+                                <span class="tag-status hazard" style="font-size: 10.5px;">80% REVENUE CANNIBALIZATION TRAP</span>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                <!-- Column 1: Incumbent Traps -->
+                                <div style="background: #FFFFFF; border: 1px solid var(--border-hairline); border-left: 3px solid var(--accent-crimson); padding: 10px 12px;">
+                                    <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 800; color: var(--accent-crimson); margin-bottom: 4px;">INCUMBENT LEGACY TRAP (HYPERVERGE, IDFY, SIGNZY):</div>
+                                    <div style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--text-secondary); line-height: 1.35;">
+                                        <div>• <strong>High Fixed GPU Bills:</strong> Bound to 24/7 AWS GPU clusters to run heavy computer vision OCR and video liveness models.</div>
+                                        <div>• <strong>Massive BPO Workforces:</strong> Thousands of manual review workers in Tier-2 call centers to verify failed scans.</div>
+                                        <div>• <strong>The -88% Revenue Trap:</strong> If incumbents drop prices to ₹3.00, their top-line revenue collapses by 88%, rendering their current venture valuations unviable.</div>
+                                    </div>
+                                </div>
+
+                                <!-- Column 2: Zero-ID Asymmetric Moat -->
+                                <div style="background: #FFFFFF; border: 1px solid var(--border-hairline); border-left: 3px solid var(--accent-green); padding: 10px 12px;">
+                                    <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 800; color: var(--accent-green); margin-bottom: 4px;">ZERO-ID ASYMMETRIC STRUCTURAL MOAT:</div>
+                                    <div style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--text-secondary); line-height: 1.35;">
+                                        <div>• <strong>Zero Marginal Server Compute:</strong> 100% of cryptographic zk-SNARK computation executes on customer phone silicon.</div>
+                                        <div>• <strong>Zero Human Reviewers:</strong> Instant mathematical proof validation replaces manual BPO call centers at 0.4s speed.</div>
+                                        <div>• <strong>Patent-Pending Claims:</strong> Hardware-enclave nullifier bindings (PCT/IN/2026/09148) protect against replication.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bottom Economics Rail -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; background: #FFFFFF; border: 1px solid var(--border-hairline); padding: 7px 12px; margin-top: 6px;">
+                                <div><span style="font-size: 11px; color: var(--text-muted);">Incumbent Revenue:</span> <strong style="font-size: 12.5px; color: var(--accent-crimson); margin-left: 4px;">₹25 – ₹35</strong></div>
+                                <div><span style="font-size: 11px; color: var(--text-muted);">Zero-ID Revenue:</span> <strong style="font-size: 12.5px; color: var(--accent-blue); margin-left: 4px;">₹3.00 Flat</strong></div>
+                                <div><span style="font-size: 11px; color: var(--text-muted);">Top-Line Destruction:</span> <strong style="font-size: 12.5px; color: var(--accent-crimson); margin-left: 4px;">-88% Cannibalization</strong></div>
+                                <div><span style="font-size: 11px; color: var(--text-muted);">Moat Status:</span> <strong style="font-size: 12.5px; color: var(--accent-green); margin-left: 4px;">Uncontested Privacy Lead</strong></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <div class="slide-footer-sources">
+                        <span><strong>Diligence Sources:</strong> Industry Vendor Rate Cards (Q1 2026); CERT-In Cyber Security Incident Reports; Company Analysis</span>
+                    </div>
+                    <div>PAGE 08 • COMPETITIVE MOAT AUDIT</div>
+                </div>
+            </section>
+
+
+            <!-- =======================================================
+                 SLIDE 9: MACRO IMPACT & CITIZEN SOVEREIGNTY
+                 ======================================================= -->
+            <section class="slide" id="slide-9">
+                <div class="slide-header">
+                    <div>
+                        <div class="slide-category success"><div class="indicator-box"></div> SYSTEMIC TRANSFORMATION &amp; ESG IMPACT</div>
+                        <h1 class="slide-title">Beyond Profit: Systemic Value Creation Across 3 Pillars</h1>
+                        <p class="slide-subtitle">How ZERO-ID de-risks Indian enterprise balance sheets, restores citizen privacy sovereignty, and protects national infrastructure.</p>
+                    </div>
+                    <div class="slide-header-meta">
+                        <div class="slide-number-box">09 / 09</div>
+                        <div class="slide-confidential-tag">MACRO IMPACT SCORECARD</div>
+                    </div>
+                </div>
+
+                <div class="slide-body">
+                    <!-- Top: 3 Pillar Columns (Rich Full-Height Impact Cards) -->
+                    <div style="flex: 1.45; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; min-height: 0;">
+                        
+                        <!-- Pillar 1: Enterprise Impact -->
+                        <div class="frame-box" style="border-top: 5px solid var(--accent-blue); justify-content: space-between; padding: 16px 20px;">
+                            <div>
+                                <div class="frame-header" style="color: var(--accent-blue); margin-bottom: 6px;">
+                                    <span>PILLAR 01: INDIAN ENTERPRISES</span>
+                                    <span class="mono" style="font-weight: 800;">ROI &amp; GOVERNANCE</span>
+                                </div>
+                                <h3 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">Enterprise Governance &amp; De-Risking</h3>
+                                
+                                <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.38;">
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid var(--accent-blue); padding: 7px 10px;">
+                                        <strong>Permanent DPDP Immunity:</strong> Eliminates catastrophic ₹250-Crore fine liabilities under Section 33 by storing 0 bytes of customer PII on cloud servers.
+                                    </div>
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid var(--accent-blue); padding: 7px 10px;">
+                                        <strong>₹2,000+ Crores Direct Savings:</strong> Slashes verification costs by 85% (from ₹25–₹35 to ₹3.00) across digital lending, insurance, and trade finance.
+                                    </div>
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid var(--accent-green); padding: 7px 10px;">
+                                        <strong>Gig Account-Renting Eradication:</strong> Blocks delivery rider account sharing across fleets (Blinkit, Zepto, Swiggy) via unforgeable FIDO2 Secure Enclave silicon binding.
+                                    </div>
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid var(--accent-blue); padding: 7px 10px;">
+                                        <strong>Court-Admissible Legal Registers:</strong> 100% compliant visitor and contractor registers under IT Act Sections 4 &amp; 5 with zero document hoarding risk.
+                                    </div>
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid var(--accent-amber); padding: 7px 10px;">
+                                        <strong>Funnel Conversion Rescue:</strong> Slashes customer onboarding drop-off from 42% to &lt; 3%, recovering wasted performance marketing CAC.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--accent-blue-subtle); padding: 8px 12px; border: 1px solid var(--accent-blue-border); font-size: 12px; font-family: var(--font-mono); color: var(--accent-blue); text-align: center; margin-top: 8px; font-weight: 800;">
+                                85% DIRECT ENTERPRISE COST REDUCTION
+                            </div>
+                        </div>
+
+                        <!-- Pillar 2: Citizen Sovereignty -->
+                        <div class="frame-box" style="border-top: 5px solid var(--accent-green); justify-content: space-between; padding: 16px 20px;">
+                            <div>
+                                <div class="frame-header" style="color: var(--accent-green); margin-bottom: 6px;">
+                                    <span>PILLAR 02: CITIZEN SOVEREIGNTY</span>
+                                    <span class="mono" style="font-weight: 800;">DIGITAL DIGNITY</span>
+                                </div>
+                                <h3 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">Restoring Citizen Data Sovereignty</h3>
+                                
+                                <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.38;">
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid var(--accent-green); padding: 7px 10px;">
+                                        <strong>End of Dark-Web Identity Leaks:</strong> Citizens never surrender unmasked physical Aadhaar photocopies to front desks, apps, or guard cabins.
+                                    </div>
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid var(--accent-green); padding: 7px 10px;">
+                                        <strong>1-Tap Instant Onboarding:</strong> Sachet borrowers, delivery riders, and hotel guests onboard in 0.38s without filling paper forms or surrendering unmasked Aadhaar scans.
+                                    </div>
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid var(--accent-crimson); padding: 7px 10px;">
+                                        <strong>3.8-Second Emergency Kill Switch:</strong> Citizens possess sovereign power to revoke stolen identity credentials instantly on Algorand ledger.
+                                    </div>
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid var(--accent-green); padding: 7px 10px;">
+                                        <strong>Zero Surveillance Footprint:</strong> Selective disclosure proves eligibility (Age ≥ 18) without exposing home addresses or Aadhaar numbers.
+                                    </div>
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid #8B5CF6; padding: 7px 10px;">
+                                        <strong>Biometric Silicon Shield:</strong> Thumbprints never leave device secure hardware enclave; zero risk of centralized biometric database cloning.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--accent-green-subtle); padding: 8px 12px; border: 1px solid var(--accent-green-border); font-size: 12px; font-family: var(--font-mono); color: var(--accent-green); text-align: center; margin-top: 8px; font-weight: 800;">
+                                ZERO PERSONAL DATA EXPOSED TO VERIFIERS
+                            </div>
+                        </div>
+
+                        <!-- Pillar 3: National Security & AML -->
+                        <div class="frame-box" style="border-top: 5px solid #8B5CF6; justify-content: space-between; padding: 16px 20px;">
+                            <div>
+                                <div class="frame-header" style="color: #7C3AED; margin-bottom: 6px;">
+                                    <span>PILLAR 03: NATIONAL SECURITY</span>
+                                    <span class="mono" style="font-weight: 800;">ANTI-MONEY LAUNDERING</span>
+                                </div>
+                                <h3 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">National Infrastructure &amp; Anti-Mule Rails</h3>
+                                
+                                <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.38;">
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid #7C3AED; padding: 7px 10px;">
+                                        <strong>Eradicating "Mule Account" Rings:</strong> Hardware biometric attestation prevents cyber-syndicates from opening accounts with stolen Aadhaar scans.
+                                    </div>
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid #7C3AED; padding: 7px 10px;">
+                                        <strong>Tamper-Proof Police Audit Trails:</strong> Cryptographic nullifier hashes provide unforgeable legal evidence for law enforcement subpoenas.
+                                    </div>
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid var(--accent-blue); padding: 7px 10px;">
+                                        <strong>Global DPI Leadership:</strong> Upgrades India Stack from centralized document sharing into the world's premier Zero-Knowledge privacy public rail.
+                                    </div>
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid #7C3AED; padding: 7px 10px;">
+                                        <strong>Sovereign Cryptographic Rails:</strong> Eliminates enterprise reliance on foreign cloud verification vendors and offshore AI servers.
+                                    </div>
+                                    <div style="background: var(--surface-subtle); border-left: 3px solid var(--accent-green); padding: 7px 10px;">
+                                        <strong>Statutory Legal Registers:</strong> Empowers hospitality and commercial facilities to maintain full police and audit compliance under IT Act Sec 4 &amp; 5 with zero data leak exposure.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="background: #F5F3FF; padding: 8px 12px; border: 1px solid #DDD6FE; font-size: 12px; font-family: var(--font-mono); color: #7C3AED; text-align: center; margin-top: 8px; font-weight: 800;">
+                                SECURING INDIA'S DIGITAL &amp; PHYSICAL RAILS
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Bottom: Board Investment Summary Banner -->
+                    <div class="frame-box" style="background: var(--surface-contrast); color: #FFFFFF; border: none; padding: 16px 24px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; flex-shrink: 0;">
+                        <div>
+                            <div style="font-family: var(--font-mono); font-size: 11.5px; color: #60A5FA; text-transform: uppercase; font-weight: 800; letter-spacing: 0.08em;">BOARD INVESTMENT SUMMARY &amp; PILOT EXECUTION COMMITMENT</div>
+                            <div style="font-size: 15.5px; font-weight: 700; color: #FFFFFF; margin-top: 3px;">
+                                ZERO-ID transforms identity verification from a toxic corporate liability into an unforgeable cryptographic asset.
+                            </div>
+                            <div style="font-size: 13px; color: #94A3B8; margin-top: 2px;">
+                                <strong>Execution Mandate:</strong> Production SDK Pilot with KreditBee NBFC &amp; Blinkit Fleet • ₹1.5 Cr Pre-Seed Capitalization • 10 Enterprise Signups by Q4.
+                            </div>
+                        </div>
+                        <div style="text-align: right; margin-left: 20px; flex-shrink: 0;">
+                            <span class="tag-status safe" style="background: rgba(16, 185, 129, 0.2); border-color: #10B981; color: #34D399; font-size: 12.5px; padding: 7px 16px; font-weight: 800;">READY FOR FOUNDRY PILOT ALLOCATION</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <div class="slide-footer-sources">
+                        <span><strong>Summary:</strong> Transforming Identity Verification from a Toxic Corporate Liability into an Unforgeable Cryptographic Asset</span>
+                    </div>
+                    <div>THANK YOU • READY FOR JURY &amp; COMMITTEE DILIGENCE</div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Minimalist Presenter Floating Controller (Clean Bottom-Center) -->
+    <div class="deck-controls">
+        <button class="deck-btn" id="prevBtn" title="Previous Slide (← / Up)">❮</button>
+        <span class="deck-indicator" id="slideIndicator">01 / 09</span>
+        <button class="deck-btn" id="nextBtn" title="Next Slide (→ / Space / Enter)">❯</button>
+        <div style="width: 1px; height: 14px; background: #334155; margin: 0 4px;"></div>
+        <button class="deck-btn" id="fullscreenBtn" title="Toggle Fullscreen (F)">⛶</button>
+    </div>
+
+    <!-- Presentation Engine Script -->
+    <script>
+        class InstitutionalDeckController {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.totalSlides = this.slides.length;
+                this.currentIndex = 0;
+                
+                this.stage = document.getElementById('deckStage');
+                this.progressIndicator = document.getElementById('progressIndicator');
+                this.slideIndicator = document.getElementById('slideIndicator');
+                
+                this.prevBtn = document.getElementById('prevBtn');
+                this.nextBtn = document.getElementById('nextBtn');
+                this.fullscreenBtn = document.getElementById('fullscreenBtn');
+
+                this.init();
+            }
+
+            init() {
+                this.handleResize();
+                window.addEventListener('resize', () => this.handleResize());
+
+                this.setupKeyboard();
+                this.setupButtons();
+                this.setupTouch();
+
+                const hash = window.location.hash;
+                if (hash && hash.startsWith('#slide-')) {
+                    const slideNum = parseInt(hash.replace('#slide-', ''), 10);
+                    if (!isNaN(slideNum) && slideNum >= 1 && slideNum <= this.totalSlides) {
+                        this.goToSlide(slideNum - 1);
+                        return;
+                    }
+                }
+
+                this.updateUI();
+            }
+
+            handleResize() {
+                const targetWidth = 1920;
+                const targetHeight = 1080;
+                
+                const windowWidth = window.innerWidth;
+                const windowHeight = window.innerHeight;
+
+                const scaleFactor = Math.min(windowWidth / targetWidth, windowHeight / targetHeight);
+                const translateX = (windowWidth - targetWidth * scaleFactor) / 2;
+                const translateY = (windowHeight - targetHeight * scaleFactor) / 2;
+
+                this.stage.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scaleFactor})`;
+            }
+
+            goToSlide(index) {
+                if (index < 0) index = 0;
+                if (index >= this.totalSlides) index = this.totalSlides - 1;
+
+                this.slides[this.currentIndex].classList.remove('active');
+                this.currentIndex = index;
+                this.slides[this.currentIndex].classList.add('active');
+
+                history.replaceState(null, null, `#slide-${this.currentIndex + 1}`);
+                this.updateUI();
+            }
+
+            nextSlide() {
+                if (this.currentIndex < this.totalSlides - 1) {
+                    this.goToSlide(this.currentIndex + 1);
+                }
+            }
+
+            prevSlide() {
+                if (this.currentIndex > 0) {
+                    this.goToSlide(this.currentIndex - 1);
+                }
+            }
+
+            updateUI() {
+                const cur = String(this.currentIndex + 1).padStart(2, '0');
+                const tot = String(this.totalSlides).padStart(2, '0');
+                this.slideIndicator.textContent = `${cur} / ${tot}`;
+
+                const percent = ((this.currentIndex + 1) / this.totalSlides) * 100;
+                this.progressIndicator.style.width = `${percent}%`;
+
+                this.prevBtn.style.opacity = this.currentIndex === 0 ? '0.3' : '1';
+                this.nextBtn.style.opacity = this.currentIndex === this.totalSlides - 1 ? '0.3' : '1';
+            }
+
+            setupKeyboard() {
+                window.addEventListener('keydown', (e) => {
+                    if (['input', 'textarea'].includes(document.activeElement.tagName.toLowerCase())) return;
+
+                    switch (e.key) {
+                        case 'ArrowRight':
+                        case 'ArrowDown':
+                        case ' ':
+                        case 'Enter':
+                        case 'PageDown':
+                            e.preventDefault();
+                            this.nextSlide();
+                            break;
+                        case 'ArrowLeft':
+                        case 'ArrowUp':
+                        case 'PageUp':
+                        case 'Backspace':
+                            e.preventDefault();
+                            this.prevSlide();
+                            break;
+                        case 'Home':
+                            e.preventDefault();
+                            this.goToSlide(0);
+                            break;
+                        case 'End':
+                            e.preventDefault();
+                            this.goToSlide(this.totalSlides - 1);
+                            break;
+                        case 'f':
+                        case 'F':
+                            e.preventDefault();
+                            this.toggleFullscreen();
+                            break;
+                    }
+                });
+            }
+
+            setupButtons() {
+                this.prevBtn.addEventListener('click', () => this.prevSlide());
+                this.nextBtn.addEventListener('click', () => this.nextSlide());
+                this.fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
+            }
+
+            setupTouch() {
+                let startX = 0;
+                let startY = 0;
+
+                window.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                    startY = e.touches[0].clientY;
+                }, { passive: true });
+
+                window.addEventListener('touchend', (e) => {
+                    const diffX = e.changedTouches[0].clientX - startX;
+                    const diffY = e.changedTouches[0].clientY - startY;
+
+                    if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
+                        if (diffX < 0) {
+                            this.nextSlide();
+                        } else {
+                            this.prevSlide();
+                        }
+                    }
+                }, { passive: true });
+            }
+
+            toggleFullscreen() {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(err => {
+                        console.warn(`Error attempting to enable full-screen mode: ${err.message}`);
+                    });
+                } else {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    }
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.deck = new InstitutionalDeckController();
+        });
+    </script>
+</body>
+</html>
